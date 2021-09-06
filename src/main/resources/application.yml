@@ -1,0 +1,25 @@
+server:
+  port: ${PORT:8080}
+---
+spring:
+  datasource:
+    db-name: apas
+    host: localhost
+    port: 5432
+    url: jdbc:postgresql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.db-name}
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog-master.yaml
+    contexts: dev
+    drop-first: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+---
+logging:
+  level:
+    org.hibernate.SQL: debug

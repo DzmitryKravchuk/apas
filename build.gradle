@@ -1,0 +1,90 @@
+plugins {
+    id 'java'
+    id 'base'
+    id 'checkstyle'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.5.1'
+    // Swagger
+    id "com.github.johnrengelman.processes" version "0.5.0"
+    id "org.springdoc.openapi-gradle-plugin" version "1.3.2"
+    // Docker
+    id 'com.avast.gradle.docker-compose' version '0.14.9'
+}
+
+dockerCompose {
+    useComposeFiles = ['docker-compose.yaml']
+}
+
+checkstyle {
+    toolVersion = '8.29'
+    ignoreFailures = false
+    maxWarnings = 0
+    configDirectory = file("$rootProject.projectDir/config/checkstyle")
+}
+
+group 'com.belpost'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    mapstructVersion = '1.4.2.Final'
+    mockitoJunitJupiterVersion = '3.6.0'
+    junitJupiterApiVersion='5.7.0'
+    swaggerVersion='1.4.6'
+    apachePoiVersion='3.9'
+}
+dependencies {
+    //      Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly "org.projectlombok:lombok"
+    testAnnotationProcessor "org.projectlombok:lombok"
+    //      Spring
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    //      MapStruct
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    //      Apache POI
+    implementation "org.apache.poi:poi-ooxml:${apachePoiVersion}"
+
+    //      Swagger
+    implementation("org.springdoc:springdoc-openapi-ui:${swaggerVersion}")
+
+    //      Liquibase
+    implementation("org.liquibase:liquibase-core")
+    //      Database
+    runtimeOnly 'org.postgresql:postgresql'
+
+    //      Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterApiVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterApiVersion}"
+    testImplementation "org.testcontainers:postgresql:1.15.3"
+    testImplementation "org.testcontainers:rabbitmq:1.16.0"
+    testImplementation("com.github.database-rider:rider-junit5:1.26.0")
+    testImplementation 'org.springframework.amqp:spring-rabbit-test'
+}
+
+compileJava {
+    options.compilerArgs += "-Amapstruct.defaultComponentModel=spring"
+    options.compilerArgs += "-Amapstruct.unmappedTargetPolicy=IGNORE"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task runDevBackend {
+    print "Run DEV Backend"
+    bootRun.args("--spring.profiles.active=dev")
+}
+runDevBackend.dependsOn bootRun

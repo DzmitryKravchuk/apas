@@ -1,0 +1,268 @@
+databaseChangeLog:
+  - changeSet:
+      id: addTable office
+      author: dzmitry_krauchuk
+      changes:
+        - createTable:
+            tableName: office
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: character varying(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: character varying(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: office_id
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: office_type_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parent_office_id
+                  type: int
+                  constraints:
+                    nullable: true
+  - changeSet:
+      id: addTable office_type
+      author: dzmitry_krauchuk
+      changes:
+        - createTable:
+            tableName: office_type
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: character varying(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: character varying(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: addTable indicator_type
+      author: dzmitry_krauchuk
+      changes:
+        - createTable:
+            tableName: indicator_type
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: character varying(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: character varying(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: addTable indicator
+      author: dzmitry_krauchuk
+      changes:
+        - createTable:
+            tableName: indicator
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: character varying(255)
+              - column:
+                  name: code
+                  type: character varying(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: indicator_type_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parent_indicator_id
+                  type: int
+                  constraints:
+                    nullable: true
+  - changeSet:
+      id: addTable indicator_for_office_type
+      author: dzmitry_krauchuk
+      changes:
+        - createTable:
+            tableName: indicator_for_office_type
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: rounding_mode
+                  type: character varying(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: indicator_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: office_type_id
+                  type: int
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: addForeignKeyConstraint FK_office_parentOffice
+      author: dzmitry_krauchuk
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: parent_office_id
+            baseTableCatalogName: com.belpost.apas
+            baseTableName: office
+            baseTableSchemaName: public
+            constraintName: FK_office_parentOffice
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableCatalogName: com.belpost.apas
+            referencedTableName: office
+            referencedTableSchemaName: public
+            validate: true
+  - changeSet:
+      id: addForeignKeyConstraint FK_office_officeType
+      author: dzmitry_krauchuk
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: office_type_id
+            baseTableCatalogName: com.belpost.apas
+            baseTableName: office
+            baseTableSchemaName: public
+            constraintName: FK_office_officeType
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableCatalogName: com.belpost.apas
+            referencedTableName: office_type
+            referencedTableSchemaName: public
+            validate: true
+  - changeSet:
+      id: addForeignKeyConstraint FK_indicator_indicatorType
+      author: dzmitry_krauchuk
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: indicator_type_id
+            baseTableCatalogName: com.belpost.apas
+            baseTableName: indicator
+            baseTableSchemaName: public
+            constraintName: FK_indicator_indicatorType
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableCatalogName: com.belpost.apas
+            referencedTableName: indicator_type
+            referencedTableSchemaName: public
+            validate: true
+  - changeSet:
+      id: addForeignKeyConstraint FK_indicatorForOfficeType_indicator
+      author: dzmitry_krauchuk
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: indicator_id
+            baseTableCatalogName: com.belpost.apas
+            baseTableName: indicator_for_office_type
+            baseTableSchemaName: public
+            constraintName: FK_indicatorForOfficeType_indicator
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableCatalogName: com.belpost.apas
+            referencedTableName: indicator
+            referencedTableSchemaName: public
+            validate: true
+  - changeSet:
+      id: addForeignKeyConstraint FK_indicatorForOfficeType_officeType
+      author: dzmitry_krauchuk
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: office_type_id
+            baseTableCatalogName: com.belpost.apas
+            baseTableName: indicator_for_office_type
+            baseTableSchemaName: public
+            constraintName: FK_indicatorForOfficeType_officeType
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableCatalogName: com.belpost.apas
+            referencedTableName: office_type
+            referencedTableSchemaName: public
+            validate: true
+  - changeSet:
+      id: addForeignKeyConstraint FK_indicatorForOfficeType_indicator
+      author: dzmitry_krauchuk
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: indicator_id
+            baseTableCatalogName: com.belpost.apas
+            baseTableName: indicator_for_office_type
+            baseTableSchemaName: public
+            constraintName: FK_indicatorForOfficeType_indicator
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableCatalogName: com.belpost.apas
+            referencedTableName: indicator
+            referencedTableSchemaName: public
+            validate: true

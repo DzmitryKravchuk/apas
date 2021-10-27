@@ -1,4 +1,4 @@
-package com.belpost;
+package com.belpost.apas;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

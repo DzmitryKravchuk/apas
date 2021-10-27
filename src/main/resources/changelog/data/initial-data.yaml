@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+        id: initial-data for indicator_type
+        author: dzmitry_krauchuk
+        changes:
+            - loadData:
+                  columns:
+                      - column:
+                            header: code
+                            name: code
+                            type: STRING
+                      - column:
+                            header: name
+                            name: name
+                            type: STRING
+                  commentLineStartsWith: '#'
+                  encoding: UTF-8
+                  file: data/indicator_type.csv
+                  quotchar: '"'
+                  separator: ','
+                  relativeToChangelogFile: true
+                  tableName: indicator_type
+  - changeSet:
+      id: initial-data for office_type
+      author: dzmitry_krauchuk
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  header: code
+                  name: code
+                  type: STRING
+              - column:
+                  header: name
+                  name: name
+                  type: STRING
+            commentLineStartsWith: '#'
+            encoding: UTF-8
+            file: data/office_type.csv
+            quotchar: '"'
+            separator: ','
+            relativeToChangelogFile: true
+            tableName: office_type

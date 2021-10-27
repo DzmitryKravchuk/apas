@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - encoding: UTF-8
+  - includeAll:
+      path: changelog/db/
+  - includeAll:
+      path: changelog/data/

@@ -1,0 +1,4 @@
+office_ttatus:
+  - id: 1
+    code: "SERVICE"
+    name: "equipment been serviced"

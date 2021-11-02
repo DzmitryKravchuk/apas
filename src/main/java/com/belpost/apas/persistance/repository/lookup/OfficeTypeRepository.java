@@ -1,12 +1,8 @@
 package com.belpost.apas.persistance.repository.lookup;
 
 import com.belpost.apas.persistance.entity.lookup.OfficeType;
-import java.util.Optional;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import com.belpost.apas.persistance.repository.LookupRepository;
 
-@Repository
-public interface OfficeTypeRepository extends CrudRepository<OfficeType, Long> {
+public interface OfficeTypeRepository extends LookupRepository<OfficeType> {
 
-  Optional<OfficeType> findByCode(String code);
 }

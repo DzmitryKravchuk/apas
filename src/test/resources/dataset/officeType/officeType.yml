@@ -1,4 +1,13 @@
-office_ttatus:
+office_type:
   - id: 1
-    code: "SERVICE"
-    name: "equipment been serviced"
+    code: "WORK_PLACE"
+    name: "ВРМ"
+  - id: 2
+    code: "POST_OFFICE"
+    name: "ОПС"
+  - id: 3
+    code: "LOCAL_OFFICE"
+    name: "РайУчасток"
+  - id: 4
+    code: "REGIONAL_OFFICE"
+    name: "РегУПС"

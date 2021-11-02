@@ -6,6 +6,7 @@ import com.belpost.apas.config.TestContainerConfig;
 import com.belpost.apas.exception.ResourceNotFoundException;
 import com.belpost.apas.model.lookup.OfficeTypeModel;
 import com.belpost.apas.persistance.entity.lookup.OfficeType;
+import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ class OfficeTypeRepositoryTest {
     OfficeTypeRepository repository;
 
     @Test
+    @ExpectedDataSet(value = "/dataset/officeType/officeType.yml")
     void shouldGetOfficeTypeByCode() {
         OfficeType ot = repository.findByCode(OfficeTypeModel.POST_OFFICE_CODE)
             .orElseThrow(() -> new ResourceNotFoundException("Failed to execute OfficeTypeRepositoryTest"));

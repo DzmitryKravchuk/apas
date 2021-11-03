@@ -25,11 +25,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: office_id
-                  type: int
-                  constraints:
-                    nullable: true
-              - column:
                   name: office_type_id
                   type: int
                   constraints:

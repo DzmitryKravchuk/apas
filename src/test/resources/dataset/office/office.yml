@@ -1,0 +1,105 @@
+office:
+  - id: 1
+    code: "230000"
+    name: "Областной филиал"
+    office_type_id: 5
+  - id: 2
+    code: "231000"
+    name: "Первый РегУПС "
+    office_type_id: 4
+    parent_office_id: 1
+  - id: 3
+    code: "232000"
+    name: "Второй РегУПС"
+    office_type_id: 4
+    parent_office_id: 1
+  - id: 4
+    code: "231100"
+    name: "Красный районный участок"
+    office_type_id: 3
+    parent_office_id: 2
+  - id: 5
+    code: "231200"
+    name: "Синий районный участок"
+    office_type_id: 3
+    parent_office_id: 2
+  - id: 6
+    code: "232100"
+    name: "Зеленый районный участок"
+    office_type_id: 3
+    parent_office_id: 3
+  - id: 7
+    code: "232200"
+    name: "Фиолетовый районный участок"
+    office_type_id: 3
+    parent_office_id: 3
+  - id: 8
+    code: "231101"
+    name: "Красное 1"
+    office_type_id: 2
+    parent_office_id: 4
+  - id: 9
+    code: "231102"
+    name: "Красное 2"
+    office_type_id: 2
+    parent_office_id: 4
+  - id: 10
+    code: "231103"
+    name: "Красное 3"
+    office_type_id: 2
+    parent_office_id: 4
+  - id: 11
+    code: "231201"
+    name: "Синее 1"
+    office_type_id: 2
+    parent_office_id: 5
+  - id: 12
+    code: "231202"
+    name: "Синее 2"
+    office_type_id: 2
+    parent_office_id: 5
+  - id: 13
+    code: "231203"
+    name: "Синее 3"
+    office_type_id: 2
+    parent_office_id: 5
+  - id: 14
+    code: "232101"
+    name: "Зеленое 1"
+    office_type_id: 2
+    parent_office_id: 6
+  - id: 15
+    code: "232102"
+    name: "Зеленое 2"
+    office_type_id: 2
+    parent_office_id: 6
+  - id: 16
+    code: "232103"
+    name: "Зеленое 3"
+    office_type_id: 2
+    parent_office_id: 6
+  - id: 17
+    code: "232201"
+    name: "Фиолетовое 1"
+    office_type_id: 2
+    parent_office_id: 7
+  - id: 18
+    code: "232202"
+    name: "Фиолетовое 2"
+    office_type_id: 2
+    parent_office_id: 7
+  - id: 19
+    code: "232203"
+    name: "Фиолетовое 3"
+    office_type_id: 2
+    parent_office_id: 7
+  - id: 20
+    code: "231101z1"
+    name: "Красное 1 ВРМ 1"
+    office_type_id: 1
+    parent_office_id: 8
+  - id: 21
+    code: "231101z2"
+    name: "Красное 1 ВРМ 2"
+    office_type_id: 1
+    parent_office_id: 8

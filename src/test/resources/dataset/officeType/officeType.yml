@@ -11,3 +11,6 @@ office_type:
   - id: 4
     code: "REGIONAL_OFFICE"
     name: "РегУПС"
+  - id: 5
+    code: "ROOT_OFFICE"
+    name: "Филиал"

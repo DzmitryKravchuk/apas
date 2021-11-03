@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table("office")
@@ -21,12 +20,8 @@ public class Office extends LookupEntity {
     @Id
     private Long id;
 
-    @MappedCollection
-    private Set <Office> subOffices = new HashSet<>();
+    private Long officeTypeId;
 
+    private Long parentOfficeId;
 
-
-    public void addSubOffice (Office subOffice) {
-        this.subOffices.add(subOffice);
-    }
 }

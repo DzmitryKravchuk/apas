@@ -11,7 +11,7 @@ import lombok.Setter;
 @EqualsAndHashCode(of = "code")
 public abstract class LookupEntity {
 
-    private String name;
+    protected String name;
 
-    private String code;
+    protected String code;
 }

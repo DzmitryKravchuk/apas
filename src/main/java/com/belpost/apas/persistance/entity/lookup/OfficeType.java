@@ -11,9 +11,9 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class OfficeType extends LookupEntity{
+public class OfficeType extends LookupEntity {
 
-  @Id
-  private Long id;
+    @Id
+    private Long id;
 
 }

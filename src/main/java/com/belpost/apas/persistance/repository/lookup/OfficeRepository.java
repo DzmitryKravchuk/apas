@@ -13,7 +13,7 @@ public interface OfficeRepository extends LookupRepository<Office> {
             "FROM office " +
             "LEFT OUTER JOIN office_type officeType " +
             "ON officeType.id = office.office_type_id " +
-            "WHERE office.code = ?")
+            "WHERE office.code = :code")
     Optional<Office> findByCode(String code);
 
 }

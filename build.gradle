@@ -60,7 +60,7 @@ dependencies {
     testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterApiVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterApiVersion}"
-    testImplementation "org.testcontainers:postgresql:1.15.3"
+    testImplementation "org.testcontainers:postgresql:1.16.0"
     testImplementation("com.github.database-rider:rider-junit5:1.26.0")
 }
 

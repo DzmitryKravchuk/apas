@@ -51,16 +51,17 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:${swaggerVersion}")
 
     //      Liquibase
-    implementation("org.liquibase:liquibase-core")
+    //implementation("org.liquibase:liquibase-core")
     //      Database
     runtimeOnly 'org.postgresql:postgresql'
 
     //      Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.h2database:h2'
     testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterApiVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterApiVersion}"
-    testImplementation "org.testcontainers:postgresql:1.16.0"
+    //testImplementation "org.testcontainers:postgresql:1.16.0"
     testImplementation("com.github.database-rider:rider-junit5:1.26.0")
 }
 

@@ -1,10 +1,12 @@
 package com.belpost.apas.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
+@EqualsAndHashCode(of = "code")
 public abstract class LookupModel {
 
     private Long id;

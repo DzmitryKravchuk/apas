@@ -4,16 +4,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.belpost.apas.exception.ResourceNotFoundException;
 import com.belpost.apas.persistance.entity.lookup.Office;
-import com.belpost.apas.support.RepositoryTest;
+import com.belpost.apas.support.PersistenceTest;
 import com.github.database.rider.core.api.dataset.DataSet;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@RepositoryTest
-class OfficeRepositoryTest {
+@PersistenceTest
+class OfficePersistenceTest {
 
-    private static final String POST_OFFICE_CODE = "230000";
+    private static final String POST_OFFICE_CODE = "231000";
 
     @Autowired
     OfficeRepository repository;
@@ -25,12 +26,18 @@ class OfficeRepositoryTest {
     public void setUp() {
     }
 
-
     @Test
     void shouldGetOfficeByCode() {
         Office ot = repository.findByCode(POST_OFFICE_CODE)
             .orElseThrow(() -> new ResourceNotFoundException("Failed to execute OfficeRepositoryTest"));
 
         assertEquals(POST_OFFICE_CODE, ot.getCode());
+    }
+
+    @Test
+    void shouldGetAllOffices() {
+        List<Office> l = repository.findAll();
+
+        assertEquals(21, l.size());
     }
 }

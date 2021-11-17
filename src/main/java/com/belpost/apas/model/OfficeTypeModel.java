@@ -1,7 +1,9 @@
-package com.belpost.apas.model.lookup;
+package com.belpost.apas.model;
 
-import com.belpost.apas.model.LookupModel;
+import com.belpost.apas.model.common.LookupModel;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 public class OfficeTypeModel extends LookupModel {
 
     public static final String WORK_PLACE_CODE = "WORK_PLACE";

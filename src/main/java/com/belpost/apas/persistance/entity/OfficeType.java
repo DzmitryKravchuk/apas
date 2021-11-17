@@ -1,6 +1,7 @@
-package com.belpost.apas.persistance.entity.lookup;
+package com.belpost.apas.persistance.entity;
 
-import com.belpost.apas.persistance.entity.LookupEntity;
+import com.belpost.apas.persistance.entity.common.LookupEntity;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class OfficeType extends LookupEntity {
 
     @Id

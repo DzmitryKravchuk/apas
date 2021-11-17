@@ -1,6 +1,6 @@
-package com.belpost.apas.model.lookup;
+package com.belpost.apas.model;
 
-import com.belpost.apas.model.LookupModel;
+import com.belpost.apas.model.common.LookupModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;

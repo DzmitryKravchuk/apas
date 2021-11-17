@@ -3,7 +3,8 @@ package com.belpost.apas.persistance.repository.lookup;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.belpost.apas.exception.ResourceNotFoundException;
-import com.belpost.apas.persistance.entity.lookup.Office;
+import com.belpost.apas.persistance.entity.Office;
+import com.belpost.apas.persistance.repository.OfficeRepository;
 import com.belpost.apas.support.PersistenceTest;
 import com.github.database.rider.core.api.dataset.DataSet;
 import java.util.List;

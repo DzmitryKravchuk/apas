@@ -1,6 +1,6 @@
-package com.belpost.apas.persistance.repository;
+package com.belpost.apas.persistance.repository.common;
 
-import com.belpost.apas.persistance.entity.LookupEntity;
+import com.belpost.apas.persistance.entity.common.LookupEntity;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;

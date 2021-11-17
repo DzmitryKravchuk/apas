@@ -1,4 +1,4 @@
-package com.belpost.apas.model;
+package com.belpost.apas.model.common;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

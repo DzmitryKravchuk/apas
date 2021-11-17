@@ -1,4 +1,4 @@
-package com.belpost.apas.model;
+package com.belpost.apas.model.common;
 
 import java.util.ArrayList;
 import java.util.List;

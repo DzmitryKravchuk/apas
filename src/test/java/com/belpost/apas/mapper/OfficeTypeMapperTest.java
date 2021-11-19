@@ -4,36 +4,47 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.belpost.apas.model.OfficeTypeModel;
 import com.belpost.apas.persistance.entity.OfficeType;
-import com.belpost.apas.utils.OfficeTypeUtils;
+import com.belpost.apas.utils.JsonMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = OfficeTypeMapperImpl.class)
+@SpringBootTest(classes = {OfficeTypeMapperImpl.class,
+    ObjectMapper.class,
+    JsonMapper.class})
 class OfficeTypeMapperTest {
-    private static final String CODE = OfficeTypeModel.POST_OFFICE_CODE;
+    private static OfficeType entity;
+    private static OfficeTypeModel model;
 
     @Autowired
-    private OfficeTypeMapper mapper;
+    private OfficeTypeMapper officeTypeMapper;
+
+    @Autowired
+    private JsonMapper jsonMapper;
+
+    @BeforeEach
+    void setUp() throws IOException {
+        entity = jsonMapper
+            .readFromFile("src/test/resources/json/officeTypePostOffice.json", OfficeType.class);
+        model = jsonMapper
+            .readFromFile("src/test/resources/json/officeTypePostOffice.json", OfficeTypeModel.class);
+    }
 
     @Test
     void shouldMapEntityToModel() {
-        OfficeType entity = OfficeTypeUtils.entities.get(CODE);
-        OfficeTypeModel expected = OfficeTypeUtils.models.get(CODE);
+        OfficeTypeModel actual = officeTypeMapper.mapToModel(entity);
 
-        OfficeTypeModel actual = mapper.mapToModel(entity);
-
-        assertEquals(expected, actual);
+        assertEquals(model, actual);
     }
 
     @Test
     void shouldMapModelToEntity() {
-        OfficeTypeModel model = OfficeTypeUtils.models.get(CODE);
-        OfficeType expected = OfficeTypeUtils.entities.get(CODE);
+        OfficeType actual = officeTypeMapper.mapToEntity(model);
 
-        OfficeType actual = mapper.mapToEntity(model);
-
-        assertEquals(expected, actual);
+        assertEquals(entity, actual);
     }
 
 }

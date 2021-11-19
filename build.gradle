@@ -29,6 +29,7 @@ ext {
     junitJupiterApiVersion='5.7.0'
     swaggerVersion='1.4.6'
     apachePoiVersion='3.9'
+    jacksonVersion ='2.10.0'
 }
 dependencies {
     //      Lombok
@@ -58,6 +59,7 @@ dependencies {
     //      Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.h2database:h2'
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterApiVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterApiVersion}"

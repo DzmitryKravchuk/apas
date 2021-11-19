@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @PersistenceTest
 class OfficePersistenceTest {
 
-    private static final String POST_OFFICE_CODE = "231000";
+    private static final String OFFICE_CODE = "231000";
 
     @Autowired
     OfficeRepository repository;
@@ -29,10 +29,10 @@ class OfficePersistenceTest {
 
     @Test
     void shouldGetOfficeByCode() {
-        Office ot = repository.findByCode(POST_OFFICE_CODE)
+        Office ot = repository.findByCode(OFFICE_CODE)
             .orElseThrow(() -> new ResourceNotFoundException("Failed to execute OfficeRepositoryTest"));
 
-        assertEquals(POST_OFFICE_CODE, ot.getCode());
+        assertEquals(OFFICE_CODE, ot.getCode());
     }
 
     @Test
@@ -41,4 +41,5 @@ class OfficePersistenceTest {
 
         assertEquals(21, l.size());
     }
+
 }

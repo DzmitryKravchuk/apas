@@ -1,0 +1,11 @@
+{
+  "id": 8,
+  "code": "231101",
+  "name": "Красное 1",
+  "officeType": {
+    "id": 2,
+    "code": "POST_OFFICE",
+    "name": "ОПС"
+  },
+  "parentOfficeId": 4
+}

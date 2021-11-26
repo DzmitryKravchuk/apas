@@ -27,7 +27,7 @@ class OfficeTypePersistenceTest {
     private JsonMapper jsonMapper;
 
     @BeforeEach
-    @DataSet(value = {},
+    @DataSet(value = {"/dataset/officeType/officeType.yml"},
         cleanBefore = true, useSequenceFiltering = false)
     void setUp() {
     }

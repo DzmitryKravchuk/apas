@@ -8,17 +8,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MvcResult;
 
 @Component
+@RequiredArgsConstructor
 public class JsonMapper {
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public <T> T readFromFile (String file, Class<T> clazz) throws IOException {
         return objectMapper.readValue(new File(file), clazz);

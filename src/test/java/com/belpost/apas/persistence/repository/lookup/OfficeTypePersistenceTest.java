@@ -13,6 +13,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 @DataJdbcTest
@@ -29,6 +31,8 @@ class OfficeTypePersistenceTest {
 
     private static final CustomObjectMapper customObjectMapper = new CustomObjectMapper(new ObjectMapper());
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     //@BeforeEach
     @DataSet(value = {"/dataset/officeType/officeType.yml"},
@@ -39,6 +43,12 @@ class OfficeTypePersistenceTest {
     @Test
     //@ExpectedDataSet(value = "/dataset/officeType/officeType.yml")
     void shouldGetOfficeTypeByCode() {
+
+        //String sql = "SELECT * FROM office_type WHERE code = ?";
+
+        //OfficeType type = (OfficeType) jdbcTemplate.queryForObject(
+        //                sql, new Object[]{1L}, new BeanPropertyRowMapper(OfficeType.class));
+
         OfficeType ot = repository.findByCode(OfficeTypeModel.ROOT_OFFICE_CODE)
             .orElseThrow(() -> new ResourceNotFoundException("Failed to execute OfficeTypeRepositoryTest"));
 

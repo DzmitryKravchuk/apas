@@ -2,10 +2,6 @@
   "id": 8,
   "code": "231101",
   "name": "Красное 1",
-  "officeTypeModel": {
-    "id": 2,
-    "code": "POST_OFFICE",
-    "name": "ОПС"
-  },
-  "parentOfficeId": 4
+  "officeTypeCode": "ОПС",
+  "parentOfficeCode": "231100"
 }

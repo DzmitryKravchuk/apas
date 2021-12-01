@@ -1,7 +1,7 @@
-package com.belpost.apas.persistance.repository;
+package com.belpost.apas.persistence.repository;
 
-import com.belpost.apas.persistance.entity.Office;
-import com.belpost.apas.persistance.repository.common.LookupRepository;
+import com.belpost.apas.persistence.entity.Office;
+import com.belpost.apas.persistence.repository.common.LookupRepository;
 import java.util.List;
 import org.springframework.data.jdbc.repository.query.Query;
 

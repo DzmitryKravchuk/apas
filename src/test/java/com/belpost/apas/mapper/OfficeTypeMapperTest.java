@@ -3,8 +3,8 @@ package com.belpost.apas.mapper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.belpost.apas.model.OfficeTypeModel;
-import com.belpost.apas.persistance.entity.OfficeType;
-import com.belpost.apas.utils.JsonMapper;
+import com.belpost.apas.persistence.entity.OfficeType;
+import com.belpost.apas.service.util.CustomObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {OfficeTypeMapperImpl.class,
     ObjectMapper.class,
-    JsonMapper.class})
+    CustomObjectMapper.class})
 class OfficeTypeMapperTest {
     private static OfficeType entity;
     private static OfficeTypeModel model;
@@ -23,13 +23,13 @@ class OfficeTypeMapperTest {
     private OfficeTypeMapper officeTypeMapper;
 
     @Autowired
-    private JsonMapper jsonMapper;
+    private CustomObjectMapper customObjectMapper;
 
     @BeforeEach
     void setUp() throws IOException {
-        entity = jsonMapper
+        entity = customObjectMapper
             .readFromFile("src/test/resources/json/officeTypePostOffice.json", OfficeType.class);
-        model = jsonMapper
+        model = customObjectMapper
             .readFromFile("src/test/resources/json/officeTypePostOffice.json", OfficeTypeModel.class);
     }
 

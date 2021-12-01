@@ -1,53 +1,44 @@
-CREATE TABLE "public.office" (
+CREATE TABLE "office" (
                                  "id" serial NOT NULL,
                                  "code" varchar(100) NOT NULL UNIQUE,
                                  "name" varchar(255) NOT NULL,
                                  "office_type_id" bigint NOT NULL,
                                  "parent_office_id" bigint,
                                  CONSTRAINT "office_pk" PRIMARY KEY ("id")
-) WITH (
-      OIDS=FALSE
-      );
+);
 
 
 
-CREATE TABLE "public.indicator" (
+CREATE TABLE "indicator" (
                                     "id" serial NOT NULL,
                                     "name" varchar(255) NOT NULL,
                                     "code" varchar(100) NOT NULL UNIQUE,
-                                    "order" int NOT NULL,
                                     "parent_indicator_id" bigint NOT NULL,
                                     "indicator_type_id" bigint NOT NULL,
                                     CONSTRAINT "indicator_pk" PRIMARY KEY ("id")
-) WITH (
-      OIDS=FALSE
-      );
+);
 
 
 
-CREATE TABLE "public.indicator_type_group" (
+CREATE TABLE "indicator_type_group" (
                                                "id" serial NOT NULL,
                                                "name" varchar(255) NOT NULL,
                                                "code" varchar(100) NOT NULL UNIQUE,
                                                CONSTRAINT "indicator_type_group_pk" PRIMARY KEY ("id")
-) WITH (
-      OIDS=FALSE
-      );
+);
 
 
 
-CREATE TABLE "public.year_month" (
+CREATE TABLE "year_month" (
                                      "id" serial NOT NULL,
                                      "year" int NOT NULL,
                                      "month" int NOT NULL,
                                      CONSTRAINT "year_month_pk" PRIMARY KEY ("id")
-) WITH (
-      OIDS=FALSE
-      );
+);
 
 
 
-CREATE TABLE "public.values_of_indicators" (
+CREATE TABLE "values_of_indicators" (
                                                "id" serial NOT NULL,
                                                "is_closed" BOOLEAN NOT NULL,
                                                "office_id" bigint NOT NULL,
@@ -58,44 +49,36 @@ CREATE TABLE "public.values_of_indicators" (
                                                "updated" TIMESTAMP NOT NULL,
                                                "is_plan" BOOLEAN NOT NULL,
                                                CONSTRAINT "values_of_indicators_pk" PRIMARY KEY ("id")
-) WITH (
-      OIDS=FALSE
-      );
+);
 
 
 
-CREATE TABLE "public.indicator_type" (
+CREATE TABLE "indicator_type" (
                                          "id" serial NOT NULL,
                                          "name" varchar(255) NOT NULL,
                                          "code" varchar(100) NOT NULL UNIQUE,
                                          "indicator_type_group_id" bigint NOT NULL,
                                          CONSTRAINT "indicator_type_pk" PRIMARY KEY ("id")
-) WITH (
-      OIDS=FALSE
-      );
+);
 
 
 
-CREATE TABLE "public.indicator_for_office_type" (
+CREATE TABLE "indicator_for_office_type" (
                                                     "id" serial NOT NULL,
                                                     "indicator_id" bigint NOT NULL,
                                                     "office_type_id" bigint NOT NULL,
                                                     "rounding_mode" varchar(50) NOT NULL,
                                                     CONSTRAINT "indicator_for_office_type_pk" PRIMARY KEY ("id")
-) WITH (
-      OIDS=FALSE
-      );
+);
 
 
 
-CREATE TABLE "public.office_type" (
+CREATE TABLE "office_type" (
                                       "id" serial NOT NULL,
                                       "name" varchar(255) NOT NULL,
                                       "code" varchar(100) NOT NULL UNIQUE,
                                       CONSTRAINT "office_type_pk" PRIMARY KEY ("id")
-) WITH (
-      OIDS=FALSE
-      );
+);
 
 
 

@@ -1,4 +1,4 @@
-package com.belpost.apas.utils;
+package com.belpost.apas.service.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @Component
 @RequiredArgsConstructor
-public class JsonMapper {
+public class TestJsonMapper {
     private final ObjectMapper objectMapper;
 
     public <T> T readFromFile (String file, Class<T> clazz) throws IOException {

@@ -10,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OfficeModel extends LookupModel {
 
-    private OfficeTypeModel officeTypeModel;
+    private String officeTypeCode;
 
-    private Long parentOfficeId;
+    private String parentOfficeCode;
+
 }

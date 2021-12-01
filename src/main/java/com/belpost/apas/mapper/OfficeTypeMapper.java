@@ -2,7 +2,7 @@ package com.belpost.apas.mapper;
 
 import com.belpost.apas.mapper.common.LookupMapper;
 import com.belpost.apas.model.OfficeTypeModel;
-import com.belpost.apas.persistance.entity.OfficeType;
+import com.belpost.apas.persistence.entity.OfficeType;
 import org.mapstruct.Mapper;
 
 @Mapper

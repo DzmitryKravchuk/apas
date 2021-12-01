@@ -1,6 +1,6 @@
-package com.belpost.apas.persistance.entity;
+package com.belpost.apas.persistence.entity;
 
-import com.belpost.apas.persistance.entity.common.LookupEntity;
+import com.belpost.apas.persistence.entity.common.LookupEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

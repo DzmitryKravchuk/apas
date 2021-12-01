@@ -1,21 +1,25 @@
-package com.belpost.apas.persistance.repository.lookup;
+package com.belpost.apas.persistence.repository.lookup;
 
 import com.belpost.apas.exception.ResourceNotFoundException;
 import com.belpost.apas.model.OfficeTypeModel;
-import com.belpost.apas.persistance.entity.OfficeType;
-import com.belpost.apas.persistance.repository.OfficeTypeRepository;
-import com.belpost.apas.support.PersistenceTest;
-import com.belpost.apas.utils.JsonMapper;
+import com.belpost.apas.persistence.entity.OfficeType;
+import com.belpost.apas.persistence.repository.OfficeTypeRepository;
+import com.belpost.apas.service.util.CustomObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSet;
-import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import java.io.IOException;
 import java.util.List;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.test.context.ActiveProfiles;
 
-@PersistenceTest
+@DataJdbcTest
+//@Sql({"classpath:schema.sql"})
+@ActiveProfiles("test")
+//@DBRider
+//@ContextConfiguration(classes = JdbcConfig.class)
 class OfficeTypePersistenceTest {
 
     private static final String OFFICE_TYPE_CODE = OfficeTypeModel.ROOT_OFFICE_CODE;
@@ -23,17 +27,17 @@ class OfficeTypePersistenceTest {
     @Autowired
     private OfficeTypeRepository repository;
 
-    @Autowired
-    private JsonMapper jsonMapper;
+    private static final CustomObjectMapper customObjectMapper = new CustomObjectMapper(new ObjectMapper());
 
-    @BeforeEach
+
+    //@BeforeEach
     @DataSet(value = {"/dataset/officeType/officeType.yml"},
         cleanBefore = true, useSequenceFiltering = false)
     void setUp() {
     }
 
     @Test
-    @ExpectedDataSet(value = "/dataset/officeType/officeType.yml")
+    //@ExpectedDataSet(value = "/dataset/officeType/officeType.yml")
     void shouldGetOfficeTypeByCode() {
         OfficeType ot = repository.findByCode(OfficeTypeModel.ROOT_OFFICE_CODE)
             .orElseThrow(() -> new ResourceNotFoundException("Failed to execute OfficeTypeRepositoryTest"));
@@ -45,7 +49,7 @@ class OfficeTypePersistenceTest {
     @Test
     void shouldGetAllOfficeTypes() throws IOException {
         List<OfficeType> actual = repository.findAll();
-        List<OfficeType> expected = jsonMapper
+        List<OfficeType> expected = customObjectMapper
             .readListFromFile("src/test/resources/json/officeTypeAll.json", OfficeType.class);
 
         Assertions.assertThat(actual)

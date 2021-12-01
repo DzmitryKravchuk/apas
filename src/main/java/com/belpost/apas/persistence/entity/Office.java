@@ -1,6 +1,6 @@
-package com.belpost.apas.persistance.entity;
+package com.belpost.apas.persistence.entity;
 
-import com.belpost.apas.persistance.entity.common.LookupEntity;
+import com.belpost.apas.persistence.entity.common.LookupEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.belpost.apas.persistance.entity.common;
+package com.belpost.apas.persistence.entity.common;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

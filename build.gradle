@@ -51,6 +51,10 @@ dependencies {
     //      Swagger
     implementation("org.springdoc:springdoc-openapi-ui:${swaggerVersion}")
 
+    //      JsonObject
+    implementation 'org.json:json:20210307'
+
+
     //      Liquibase
     //implementation("org.liquibase:liquibase-core")
     //      Database
@@ -59,12 +63,11 @@ dependencies {
     //      Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.h2database:h2'
-    testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    //testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     testImplementation "org.mockito:mockito-junit-jupiter:${mockitoJunitJupiterVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterApiVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterApiVersion}"
     //testImplementation "org.testcontainers:postgresql:1.16.0"
-    //compile group: 'com.github.database-rider', name: 'rider-junit5', version: '1.2.9'
     testImplementation 'com.github.database-rider:rider-junit5:1.32.0'
 }
 

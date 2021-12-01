@@ -1,24 +1,41 @@
-package com.belpost.apas.persistance.repository.lookup;
+package com.belpost.apas.persistence.repository.lookup;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.belpost.apas.exception.ResourceNotFoundException;
-import com.belpost.apas.persistance.entity.Office;
-import com.belpost.apas.persistance.repository.OfficeRepository;
-import com.belpost.apas.support.PersistenceTest;
+import com.belpost.apas.persistence.entity.Office;
+import com.belpost.apas.persistence.repository.OfficeRepository;
 import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.junit5.api.DBRider;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 
-@PersistenceTest
+//@PersistenceTest
+@DBRider
+//@ActiveProfiles("test")
+@DataJdbcTest
+//@EnableJdbcRepositories(basePackages="com.belpost.apas.persistance.repository")
+//@SpringBootTest(classes = {Office.class,
+//    OfficeRepository.class
+//    RelationalMappingContext.class,
+//    BasicJdbcConverter.class,
+//    H2Dialect.class
+//})
 class OfficePersistenceTest {
 
     private static final String OFFICE_CODE = "231000";
 
     @Autowired
     OfficeRepository repository;
+
+//    @Autowired
+//    BasicJdbcConverter jdbcConverter;
+
+ //   @Autowired
+ //   H2Dialect dialect;
 
     @BeforeEach
     @DataSet(value = {"/dataset/officeType/officeType.yml",

@@ -17,7 +17,7 @@ import org.springframework.data.relational.core.mapping.Table;
 public class OfficeType extends LookupEntity {
 
     @Id
-    @Column("id")
+    @Column()
     private Long id;
 
 }

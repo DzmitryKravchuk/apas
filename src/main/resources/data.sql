@@ -1,5 +1,5 @@
 
-INSERT INTO office_type (code, name) VALUES
+INSERT INTO "office_type" (code, name) VALUES
                                             ('ВРМ', 'Выделенное рабочее место'),
                                             ('ОПС', 'Отделение почтовой связи'),
                                             ('РайУч', 'Районный участок'),

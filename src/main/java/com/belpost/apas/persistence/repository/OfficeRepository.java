@@ -17,8 +17,8 @@ public interface OfficeRepository extends LookupRepository<Office> {
         + "officeType.id AS officetype_id, "
         + "officeType.name AS officetype_name, "
         + "officeType.code AS officetype_code "
-        + "FROM office "
-        + "LEFT OUTER JOIN office_type officeType "
+        + "FROM \"office\" AS office "
+        + "LEFT OUTER JOIN \"office_type\" officeType "
         + "ON officeType.id = office.office_type_id "
         + "WHERE office.code = :code")
     Optional<Office> findByCode(String code);
@@ -31,8 +31,8 @@ public interface OfficeRepository extends LookupRepository<Office> {
         + "officeType.id AS officetype_id, "
         + "officeType.name AS officetype_name, "
         + "officeType.code AS officetype_code "
-        + "FROM office "
-        + "LEFT OUTER JOIN office_type officeType "
+        + "FROM \"office\" AS office "
+        + "LEFT OUTER JOIN \"office_type\" officeType "
         + "ON officeType.id = office.office_type_id ")
     List<Office> findAll();
 }

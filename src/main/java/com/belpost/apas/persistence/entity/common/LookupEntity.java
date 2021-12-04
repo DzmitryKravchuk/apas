@@ -11,9 +11,7 @@ import org.springframework.data.relational.core.mapping.Column;
 @RequiredArgsConstructor
 @EqualsAndHashCode(of = "code")
 public abstract class LookupEntity {
-    @Column()
     protected String name;
 
-    @Column()
     protected String code;
 }

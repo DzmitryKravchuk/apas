@@ -52,7 +52,8 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:${swaggerVersion}")
 
     //      JsonObject
-    implementation 'org.json:json:20210307'
+    //implementation 'org.json:json:20210307'
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
 
     //      Liquibase

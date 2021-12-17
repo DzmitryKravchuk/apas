@@ -10,24 +10,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-@SpringBootTest(classes = {XlsxFileReader.class,
-        FileInputStream.class,
-        ObjectMapper.class,
-        CustomObjectMapper.class})
+@SpringBootTest()
 class XlsxFileReaderTest {
 
-    private static final String officeFile = "src/test/resources/xlsx/office.xlsx";
+    private static final String officeFile = "src/test/resources/xlsx/office.xls";
+    private final XlsxFileReader fileReader = new XlsxFileReader(officeFile);
 
-    @Autowired
-    private XlsxFileReader fileReader;
+    XlsxFileReaderTest() throws FileNotFoundException {
+    }
 
 
     @Test
     void shouldReadFromOfficesToDataModel() throws IOException {
-        DataModel<OfficeModel> model = fileReader.read(new File(officeFile), OfficeModel.class);
+        DataModel<OfficeModel> model = fileReader.read(OfficeModel.class);
         Assertions.assertEquals(2, model.getContent().size());
     }
 }

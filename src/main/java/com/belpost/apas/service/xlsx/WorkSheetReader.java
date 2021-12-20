@@ -30,7 +30,7 @@ public class WorkSheetReader {
         processMetadata(dataModel, metadataAsString);
 
         //process header
-        final Map<Integer, String> header = getHeaderAsMap(workSheet);
+        final Map<Integer, Object> header = getHeaderAsMap(workSheet);
 
         //process content
         fillContent(dataModel, workSheet, clazz, header);
@@ -40,7 +40,7 @@ public class WorkSheetReader {
         return dataModel;
     }
 
-    private <T> void fillContent(DataModel<T> dataModel, XSSFSheet workSheet, Class<T> clazz, Map<Integer, String> header) throws IOException {
+    private <T> void fillContent(DataModel<T> dataModel, XSSFSheet workSheet, Class<T> clazz, Map<Integer, Object> header) throws IOException {
         int lastRowIndex = workSheet.getLastRowNum();
         for (int i = 2; i <= lastRowIndex; i++) {
             XSSFRow nextRow = workSheet.getRow(i);
@@ -50,20 +50,29 @@ public class WorkSheetReader {
         }
     }
 
-    private String convertRowToStringObject(Map<Integer, String> header,
+    private String convertRowToStringObject(Map<Integer, Object> header,
                                             XSSFRow nextRow) throws JsonProcessingException {
         Iterator<Cell> cellIter = nextRow.cellIterator();
-        Map<String, String> rowObjectMap = new HashMap<>();
+        Map<String, Object> rowObjectMap = new HashMap<>();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("{");
         while (cellIter.hasNext()) {
             XSSFCell nextCell = (XSSFCell) cellIter.next();
-            rowObjectMap.put(header.get(nextCell.getColumnIndex()),
-                    readCellValue(nextCell));
+            //rowObjectMap.put((String) header.get(nextCell.getColumnIndex()),
+            //        readCellValue(nextCell).toString());
+            stringBuilder.append(header.get(nextCell.getColumnIndex()));
+            stringBuilder.append(":");
+            stringBuilder.append(readCellValue(nextCell));
+            stringBuilder.append(",");
         }
-        return objectMapper.writeValueAsString(rowObjectMap);
+        stringBuilder.setLength(stringBuilder.length() - 1);;
+        stringBuilder.append("}");
+        //return objectMapper.writeValueAsString(rowObjectMap);
+        return stringBuilder.toString();
     }
 
-    private Map<Integer, String> getHeaderAsMap(XSSFSheet workSheet) {
-        final Map<Integer, String> header = new HashMap<>();
+    private Map<Integer, Object> getHeaderAsMap(XSSFSheet workSheet) {
+        final Map<Integer, Object> header = new HashMap<>();
         XSSFRow nextRow = workSheet.getRow(1);
         Iterator<Cell> cellIter = nextRow.cellIterator();
         while (cellIter.hasNext()) {
@@ -87,8 +96,9 @@ public class WorkSheetReader {
         return nextCell.getStringCellValue();
     }
 
-    private String readCellValue(Cell nextCell) {
-        return nextCell.getStringCellValue();
+    private Object readCellValue(Cell nextCell) {
+        return (nextCell.getCellType() == Cell.CELL_TYPE_NUMERIC)
+                ? nextCell.getNumericCellValue() : nextCell.getStringCellValue();
     }
 
 }

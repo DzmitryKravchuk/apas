@@ -1,7 +1,13 @@
 package com.belpost.apas.service.xlsx;
 
-import com.belpost.apas.service.util.CustomObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -10,19 +16,14 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class WorkSheetReader {
 
-    private final CustomObjectMapper objectMapper;
-
-    public <T> DataModel<T> read(XSSFSheet workSheet, Class<T> clazz) throws IOException {
+    public <T> DataModel<T> read(XSSFSheet workSheet, Class<T> clazz)
+        throws InvocationTargetException, NoSuchMethodException, IllegalAccessException,
+        InstantiationException {
         log.info("Start reading from workSheet [{}]", workSheet.getSheetName());
         DataModel<T> dataModel = new DataModel<>();
         //process metadata
@@ -40,35 +41,42 @@ public class WorkSheetReader {
         return dataModel;
     }
 
-    private <T> void fillContent(DataModel<T> dataModel, XSSFSheet workSheet, Class<T> clazz, Map<Integer, Object> header) throws IOException {
+    private <T> void fillContent(DataModel<T> dataModel, XSSFSheet workSheet, Class<T> clazz,
+                                 Map<Integer, Object> header)
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+        InstantiationException {
         int lastRowIndex = workSheet.getLastRowNum();
         for (int i = 2; i <= lastRowIndex; i++) {
             XSSFRow nextRow = workSheet.getRow(i);
-            String json = convertRowToStringObject(header, nextRow);
-            final T pojo = objectMapper.readFromFile(json, clazz);
+            final T pojo = convertRowToObject(header, nextRow, clazz);
             dataModel.getContent().add(pojo);
         }
     }
 
-    private String convertRowToStringObject(Map<Integer, Object> header,
-                                            XSSFRow nextRow) throws JsonProcessingException {
+    private <T> T convertRowToObject(Map<Integer, Object> header, XSSFRow nextRow, Class<T> clazz)
+        throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
         Iterator<Cell> cellIter = nextRow.cellIterator();
-        Map<String, Object> rowObjectMap = new HashMap<>();
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("{");
+        Constructor<T> cst = clazz.getConstructor();
+        T pojo = cst.newInstance();
+        Map<String, Method> methods = getMethods(clazz);
         while (cellIter.hasNext()) {
             XSSFCell nextCell = (XSSFCell) cellIter.next();
-            //rowObjectMap.put((String) header.get(nextCell.getColumnIndex()),
-            //        readCellValue(nextCell).toString());
-            stringBuilder.append(header.get(nextCell.getColumnIndex()));
-            stringBuilder.append(":");
-            stringBuilder.append(readCellValue(nextCell));
-            stringBuilder.append(",");
+            Method m = methods.get("set" + header.get(nextCell.getColumnIndex()));
+
+            m.invoke(pojo, readCellValue(nextCell));
         }
-        stringBuilder.setLength(stringBuilder.length() - 1);;
-        stringBuilder.append("}");
-        //return objectMapper.writeValueAsString(rowObjectMap);
-        return stringBuilder.toString();
+        return pojo;
+    }
+
+    private <T> Map<String, Method> getMethods(Class<T> clazz) {
+        Map<String, Method> methods = Arrays.stream(clazz.getDeclaredMethods())
+            .collect(Collectors.toMap(Method::getName, m -> m));
+        if (clazz.getSuperclass() != null) {
+            Map<String, Method> superMethods = Arrays.stream(clazz.getSuperclass().getDeclaredMethods())
+                .collect(Collectors.toMap(Method::getName, m -> m));
+            methods.putAll(superMethods);
+        }
+        return methods;
     }
 
     private Map<Integer, Object> getHeaderAsMap(XSSFSheet workSheet) {
@@ -98,7 +106,7 @@ public class WorkSheetReader {
 
     private Object readCellValue(Cell nextCell) {
         return (nextCell.getCellType() == Cell.CELL_TYPE_NUMERIC)
-                ? nextCell.getNumericCellValue() : nextCell.getStringCellValue();
+            ? (long) nextCell.getNumericCellValue() : nextCell.getStringCellValue();
     }
 
 }

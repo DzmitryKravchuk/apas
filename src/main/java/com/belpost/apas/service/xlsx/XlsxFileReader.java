@@ -1,5 +1,6 @@
 package com.belpost.apas.service.xlsx;
 
+import java.lang.reflect.InvocationTargetException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -26,7 +27,9 @@ public class XlsxFileReader {
     }
 
 
-    public <T> DataModel<T> read(String pathToFile, Class<T> clazz) throws IOException {
+    public <T> DataModel<T> read(String pathToFile, Class<T> clazz)
+        throws IOException, InvocationTargetException, NoSuchMethodException, IllegalAccessException,
+        InstantiationException {
         log.info("Start reading workbook from file [{}]", pathToFile);
         XSSFWorkbook workBook = createWorkBook(pathToFile);
         XSSFSheet workSheet = workBook.getSheetAt(0);

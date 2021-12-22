@@ -30,7 +30,7 @@ class OfficeTypePersistenceTest extends AbstractPersistenceTest {
     void shouldGetAllOfficeTypes() throws IOException {
         List<OfficeType> actual = repository.findAll();
         List<OfficeType> expected = customObjectMapper
-                .readListFromFile("src/test/resources/json/officeTypeAll.json", OfficeType.class);
+                .readListFromFile("src/test/resources/json/officeType/officeTypeAll.json", OfficeType.class);
 
         Assertions.assertThat(actual)
                 .hasSize(5)

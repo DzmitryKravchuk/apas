@@ -1,7 +1,10 @@
 package com.belpost.apas.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -10,6 +13,11 @@ import com.belpost.apas.model.OfficeModel;
 import com.belpost.apas.model.OfficeTypeModel;
 import com.belpost.apas.persistence.entity.Office;
 import com.belpost.apas.persistence.repository.OfficeRepository;
+import com.belpost.apas.service.util.CustomObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,38 +45,72 @@ class OfficeLookupServiceImplTest {
     @InjectMocks
     OfficeLookupServiceImpl service;
 
+    private static final Office entity = mock(Office.class);
+    private static final OfficeModel model = mock(OfficeModel.class);
+    private static final OfficeTypeModel type = mock(OfficeTypeModel.class);
+    private static final Office parent = mock(Office.class);
+
+    @BeforeEach
+    void setUp() {
+        lenient().when(officeRepository.findByCode(OFFICE_CODE)).thenReturn(java.util.Optional.ofNullable(entity));
+        lenient().when(officeRepository.findById(OFFICE_ID)).thenReturn(java.util.Optional.ofNullable(entity));
+        lenient().when(entity.getOfficeTypeId()).thenReturn(OFFICE_TYPE_ID);
+        lenient().when(officeTypeService.getById(OFFICE_TYPE_ID)).thenReturn(type);
+        lenient().when(type.getCode()).thenReturn(OFFICE_TYPE_CODE);
+        lenient().when(entity.getParentOfficeId()).thenReturn(PARENT_OFFICE_ID);
+        lenient().when(officeRepository.findById(PARENT_OFFICE_ID)).thenReturn(java.util.Optional.ofNullable(parent));
+        lenient().when(parent.getCode()).thenReturn(PARENT_OFFICE_CODE);
+        lenient().when(officeMapper.mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE)).thenReturn(model);
+
+    }
+
     @Test
     void shouldGetOfficeByCode() {
-        //given
-        Office entity = mock(Office.class);
-        OfficeModel model = mock(OfficeModel.class);
-        OfficeTypeModel type = mock(OfficeTypeModel.class);
-        Office parent = mock(Office.class);
-
-        when(officeRepository.findByCode(OFFICE_CODE)).thenReturn(java.util.Optional.ofNullable(entity));
-        when(entity.getOfficeTypeId()).thenReturn(OFFICE_TYPE_ID);
-        when(officeTypeService.getById(OFFICE_TYPE_ID)).thenReturn(type);
-        when(type.getCode()).thenReturn(OFFICE_TYPE_CODE);
-        when(entity.getParentOfficeId()).thenReturn(PARENT_OFFICE_ID);
-        when(officeRepository.findById(PARENT_OFFICE_ID)).thenReturn(java.util.Optional.ofNullable(parent));
-        when(parent.getCode()).thenReturn(PARENT_OFFICE_CODE);
-        when(officeMapper.mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE)).thenReturn(model);
-
-
         //when
         OfficeModel officeModel = service.getByCode(OFFICE_CODE);
 
         //then
         assertEquals(model, officeModel);
         verify(officeRepository).findByCode(OFFICE_CODE);
-        verify(entity).getOfficeTypeId();
         verify(officeTypeService).getById(OFFICE_TYPE_ID);
-        verify(type).getCode();
-        verify(entity).getParentOfficeId();
         verify(officeRepository).findById(PARENT_OFFICE_ID);
-        verify(parent).getCode();
         verify(officeMapper).mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE);
 
     }
 
+    @Test
+    void shouldGetOfficeById() {
+        //when
+        OfficeModel officeModel = service.getById(OFFICE_ID);
+
+        //then
+        assertEquals(model, officeModel);
+        verify(officeRepository).findById(OFFICE_ID);
+        verify(officeTypeService).getById(OFFICE_TYPE_ID);
+        verify(officeRepository).findById(PARENT_OFFICE_ID);
+        verify(officeMapper).mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE);
+
+    }
+
+    @Test
+    void shouldGetAll() throws IOException {
+        //given
+        CustomObjectMapper customObjectMapper = new CustomObjectMapper(new ObjectMapper());
+        List<OfficeTypeModel> officeTypes = customObjectMapper
+            .readListFromFile("src/test/resources/json/officeType/officeTypeAll.json", OfficeTypeModel.class);
+
+        List<Office> offices = customObjectMapper
+            .readListFromFile("src/test/resources/json/office/officeAll.json", Office.class);
+        when(officeRepository.findAll()).thenReturn(offices);
+        when(officeTypeService.getAll()).thenReturn(officeTypes);
+
+        //when
+        List <OfficeModel> officeModels = service.getAll();
+
+        //then
+        assertEquals(21, officeModels.size());
+        verify(officeRepository).findAll();
+        verify(officeTypeService).getAll();
+        verify(officeMapper,times(20)).mapToModel(any(Office.class), any(String.class), any(String.class));
+    }
 }

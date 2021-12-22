@@ -24,9 +24,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class OfficeTypeServiceImplTest {
+class OfficeTypeLookupServiceImplTest {
 
-    private static final String OFFICE_CODE = "POST_OFFICE";
+    private static final String OFFICE_TYPE_CODE = "РУПС";
+    private static final Long OFFICE_TYPE_ID = 1L;
 
     @Mock
     OfficeTypeRepository officeTypeRepository;
@@ -35,7 +36,7 @@ class OfficeTypeServiceImplTest {
     OfficeTypeMapper officeTypeMapper;
 
     @InjectMocks
-    OfficeTypeServiceImpl service;
+    OfficeTypeLookupServiceImpl service;
 
     @Test
     void shouldGetOfficeTypeByCode() {
@@ -43,15 +44,34 @@ class OfficeTypeServiceImplTest {
         OfficeType entity = mock(OfficeType.class);
         OfficeTypeModel model = mock(OfficeTypeModel.class);
 
-        when(officeTypeRepository.findByCode(OFFICE_CODE)).thenReturn(java.util.Optional.ofNullable(entity));
+        when(officeTypeRepository.findByCode(OFFICE_TYPE_CODE)).thenReturn(java.util.Optional.ofNullable(entity));
         when(officeTypeMapper.mapToModel(entity)).thenReturn(model);
 
         //when
-        OfficeTypeModel officeTypeModel = service.getByCode(OFFICE_CODE);
+        OfficeTypeModel officeTypeModel = service.getByCode(OFFICE_TYPE_CODE);
 
         //then
-        assertEquals(model,officeTypeModel);
-        verify(officeTypeRepository).findByCode(OFFICE_CODE);
+        assertEquals(model, officeTypeModel);
+        verify(officeTypeRepository).findByCode(OFFICE_TYPE_CODE);
+        verify(officeTypeMapper).mapToModel(entity);
+
+    }
+
+    @Test
+    void shouldGetOfficeTypeById() {
+        //given
+        OfficeType entity = mock(OfficeType.class);
+        OfficeTypeModel model = mock(OfficeTypeModel.class);
+
+        when(officeTypeRepository.findById(OFFICE_TYPE_ID)).thenReturn(java.util.Optional.ofNullable(entity));
+        when(officeTypeMapper.mapToModel(entity)).thenReturn(model);
+
+        //when
+        OfficeTypeModel officeTypeModel = service.getById(OFFICE_TYPE_ID);
+
+        //then
+        assertEquals(model, officeTypeModel);
+        verify(officeTypeRepository).findById(OFFICE_TYPE_ID);
         verify(officeTypeMapper).mapToModel(entity);
 
     }
@@ -59,13 +79,13 @@ class OfficeTypeServiceImplTest {
     @Test
     void shouldGetResourceNotFoundException() {
         //given
-        when(officeTypeRepository.findByCode(OFFICE_CODE)).thenReturn(Optional.empty());
+        when(officeTypeRepository.findByCode(OFFICE_TYPE_CODE)).thenReturn(Optional.empty());
 
         //when
-        assertThrows(ResourceNotFoundException.class, () -> service.getByCode(OFFICE_CODE));
+        assertThrows(ResourceNotFoundException.class, () -> service.getByCode(OFFICE_TYPE_CODE));
 
         //then
-        verify(officeTypeRepository).findByCode(OFFICE_CODE);
+        verify(officeTypeRepository).findByCode(OFFICE_TYPE_CODE);
     }
 
     @Test
@@ -75,11 +95,12 @@ class OfficeTypeServiceImplTest {
         when(officeTypeMapper.mapToModel(any(OfficeType.class))).thenReturn(new OfficeTypeModel());
 
         //when
-        List<OfficeTypeModel> l = service.findAll();
+        List<OfficeTypeModel> l = service.getAll();
 
         //then
-        verify(officeTypeRepository,times(1)).findAll();
-        verify(officeTypeMapper,times(1)).mapToModel(any(OfficeType.class));
+        assertEquals(1, l.size());
+        verify(officeTypeRepository, times(1)).findAll();
+        verify(officeTypeMapper, times(1)).mapToModel(any(OfficeType.class));
     }
 
 }

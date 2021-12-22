@@ -3,7 +3,6 @@ package com.belpost.apas.mapper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.belpost.apas.model.OfficeModel;
-import com.belpost.apas.model.OfficeTypeModel;
 import com.belpost.apas.persistence.entity.Office;
 import com.belpost.apas.service.util.CustomObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,11 +17,11 @@ import org.springframework.boot.test.context.SpringBootTest;
     CustomObjectMapper.class})
 class OfficeMapperTest {
 
+    private static final String OFFICE_TYPE_CODE = "ОПС";
+    private static final String PARENT_OFFICE_CODE = "231100";
+    private static final Long OFFICE_TYPE_ID = 2L;
     private static Office entity;
-    private static Office parent;
     private static OfficeModel model;
-    private static OfficeModel parentModel;
-    private static OfficeTypeModel officeTypeModel;
 
     @Autowired
     private OfficeMapper officeMapper;
@@ -34,26 +33,20 @@ class OfficeMapperTest {
     void setUp() throws IOException {
         entity = customObjectMapper
             .readFromFile("src/test/resources/json/postOffice.json", Office.class);
-        parent = customObjectMapper
-            .readFromFile("src/test/resources/json/postOfficeParent.json", Office.class);
         model = customObjectMapper
             .readFromFile("src/test/resources/json/postOfficeModel.json", OfficeModel.class);
-        parentModel = customObjectMapper
-            .readFromFile("src/test/resources/json/postOfficeModelParent.json", OfficeModel.class);
-        officeTypeModel = customObjectMapper
-            .readFromFile("src/test/resources/json/officeTypePostOffice.json", OfficeTypeModel.class);
     }
 
     @Test
     void shouldMapEntityToModel() {
-        OfficeModel actual = officeMapper.mapToModel(entity, parent);
+        OfficeModel actual = officeMapper.mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE);
 
         assertEquals(model, actual);
     }
 
     @Test
     void shouldMapModelToEntity() {
-        Office actual = officeMapper.mapToEntity(model, parentModel, officeTypeModel);
+        Office actual = officeMapper.mapToEntity(model, OFFICE_TYPE_ID);
 
         assertEquals(entity, actual);
     }

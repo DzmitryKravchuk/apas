@@ -11,5 +11,7 @@ public interface LookupRepository <T extends LookupEntity> extends CrudRepositor
 
   Optional<T> findByCode(String code);
 
+  Optional<T> findById(Long id);
+
   List<T> findAll();
 }

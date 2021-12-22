@@ -22,6 +22,6 @@ public class Office extends LookupEntity {
 
     private Long parentOfficeId;
 
-    private OfficeType officeType;
+    private Long officeTypeId;
 
 }

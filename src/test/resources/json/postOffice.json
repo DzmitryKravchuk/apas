@@ -2,10 +2,6 @@
   "id": 8,
   "code": "231101",
   "name": "Красное 1",
-  "officeType": {
-    "id": 2,
-    "code": "ОПС",
-    "name": "Отделение почтовой связи"
-  },
+  "officeTypeId": 2,
   "parentOfficeId": 4
 }

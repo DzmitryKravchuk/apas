@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-public abstract class LookupServiceImpl<M extends LookupModel, E extends LookupEntity> {
+public abstract class LookupServiceImpl<E extends LookupEntity> {
     private final LookupRepository<E> repository;
 
     @Transactional(readOnly = true)

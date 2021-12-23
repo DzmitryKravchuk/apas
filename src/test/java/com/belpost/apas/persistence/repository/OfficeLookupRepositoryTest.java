@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 @Sql({"classpath:dataset/office/office_data.sql"})
-class OfficePersistenceTest extends AbstractPersistenceTest {
+class OfficeLookupRepositoryTest extends AbstractPersistenceTest {
 
     private static final String OFFICE_CODE = "231000";
     private static final Long OFFICE_ID = 2L;
 
     @Autowired
-    OfficeRepository repository;
+    OfficeLookupRepository repository;
 
     @Test
     void shouldGetOfficeByCode() {
@@ -41,13 +41,5 @@ class OfficePersistenceTest extends AbstractPersistenceTest {
         assertEquals(21, l.size());
     }
 
-    @Test
-    void shouldGetAllOfficesByParentId() {
-        List<Office> l1 = repository.findAllByParentOfficeIdIn(1L);
-        List<Office> l2 = repository.findAllByParentOfficeIdIn(2L, 3L);
-
-        assertEquals(2, l1.size());
-        assertEquals(4, l2.size());
-    }
 
 }

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Slf4j
 public class OfficeLookupServiceImpl extends
-    LookupServiceImpl<OfficeModel, Office> implements LookupService<OfficeModel> {
+    LookupServiceImpl<Office> implements LookupService<OfficeModel> {
 
     private final OfficeTypeLookupServiceImpl officeTypeService;
     private final OfficeMapper mapper;

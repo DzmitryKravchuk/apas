@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OfficeTypeLookupServiceImpl extends
-    LookupServiceImpl<OfficeTypeModel, OfficeType> implements LookupService<OfficeTypeModel> {
+    LookupServiceImpl<OfficeType> implements LookupService<OfficeTypeModel> {
 
     private final OfficeTypeMapper mapper;
 

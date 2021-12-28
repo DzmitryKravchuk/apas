@@ -1,7 +1,6 @@
 package com.belpost.apas.service.common;
 
 import com.belpost.apas.exception.ResourceNotFoundException;
-import com.belpost.apas.model.common.LookupModel;
 import com.belpost.apas.persistence.entity.common.LookupEntity;
 import com.belpost.apas.persistence.repository.common.LookupRepository;
 import java.lang.reflect.ParameterizedType;
@@ -32,7 +31,7 @@ public abstract class LookupServiceImpl<E extends LookupEntity> {
 
     @SuppressWarnings("unchecked")
     String getEntityInfo() {
-        return ((Class<E>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1])
+        return ((Class<E>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0])
             .getSimpleName();
     }
 }

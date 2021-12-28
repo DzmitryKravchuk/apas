@@ -1,12 +1,12 @@
 package com.belpost.apas.persistence.repository.common;
 
-import com.belpost.apas.persistence.entity.Office;
-import org.springframework.data.repository.CrudRepository;
-
+import com.belpost.apas.persistence.entity.common.NodeEntity;
 import java.util.List;
+import org.springframework.data.repository.NoRepositoryBean;
 
-public interface NodeRepository <N> extends CrudRepository<N, Long> {
+@NoRepositoryBean
+public interface NodeRepository <N extends NodeEntity> extends LookupRepository<N> {
 
-    List<N> findAllByParentOfficeIdIn (Long... parentOfficeIds);
+    List<N> findAllByParentIdIn (Long... parentOfficeIds);
 
 }

@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS "office" (
                                  code varchar(100) NOT NULL UNIQUE,
                                  name varchar(255) NOT NULL,
                                  office_type_id bigint NOT NULL,
-                                 parent_office_id bigint,
+                                 parent_id bigint,
                                  CONSTRAINT office_pk PRIMARY KEY (id)
 );
 
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS "indicator" (
                                     id serial NOT NULL,
                                     name varchar(255) NOT NULL,
                                     code varchar(100) NOT NULL UNIQUE,
-                                    parent_indicator_id bigint NOT NULL,
+                                    parent_id bigint NOT NULL,
                                     indicator_type_id bigint NOT NULL,
                                     CONSTRAINT indicator_pk PRIMARY KEY (id)
 );
@@ -83,9 +83,9 @@ CREATE TABLE IF NOT EXISTS "office_type" (
 
 
 ALTER TABLE "office" ADD CONSTRAINT office_fk0 FOREIGN KEY (office_type_id) REFERENCES "office_type"(id);
-ALTER TABLE "office" ADD CONSTRAINT office_fk1 FOREIGN KEY (parent_office_id) REFERENCES "office"(id);
+ALTER TABLE "office" ADD CONSTRAINT office_fk1 FOREIGN KEY (parent_id) REFERENCES "office"(id);
 
-ALTER TABLE "indicator" ADD CONSTRAINT indicator_fk0 FOREIGN KEY (parent_indicator_id) REFERENCES "indicator"(id);
+ALTER TABLE "indicator" ADD CONSTRAINT indicator_fk0 FOREIGN KEY (parent_id) REFERENCES "indicator"(id);
 ALTER TABLE "indicator" ADD CONSTRAINT indicator_fk1 FOREIGN KEY (indicator_type_id) REFERENCES "indicator_type"(id);
 
 

@@ -12,7 +12,7 @@ import com.belpost.apas.mapper.OfficeMapper;
 import com.belpost.apas.model.OfficeModel;
 import com.belpost.apas.model.OfficeTypeModel;
 import com.belpost.apas.persistence.entity.Office;
-import com.belpost.apas.persistence.repository.OfficeLookupRepository;
+import com.belpost.apas.persistence.repository.OfficeNodeRepository;
 import com.belpost.apas.service.util.CustomObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class OfficeLookupServiceImplTest {
+class OfficeServiceImplTest {
     private static final String OFFICE_CODE = "231000";
     private static final String OFFICE_TYPE_CODE = "РeгУПС";
     private static final Long OFFICE_TYPE_ID = 3L;
@@ -34,16 +34,17 @@ class OfficeLookupServiceImplTest {
     private static final Long OFFICE_ID = 2L;
 
     @Mock
-    OfficeLookupRepository officeLookupRepository;
+    //OfficeLookupRepository officeLookupRepository;
+    OfficeNodeRepository officeLookupRepository;
 
     @Mock
-    OfficeTypeLookupServiceImpl officeTypeService;
+    OfficeTypeServiceImpl officeTypeService;
 
     @Mock
     OfficeMapper officeMapper;
 
     @InjectMocks
-    OfficeLookupServiceImpl service;
+    OfficeServiceImpl service;
 
     private static final Office entity = mock(Office.class);
     private static final OfficeModel model = mock(OfficeModel.class);
@@ -57,7 +58,7 @@ class OfficeLookupServiceImplTest {
         lenient().when(entity.getOfficeTypeId()).thenReturn(OFFICE_TYPE_ID);
         lenient().when(officeTypeService.getById(OFFICE_TYPE_ID)).thenReturn(type);
         lenient().when(type.getCode()).thenReturn(OFFICE_TYPE_CODE);
-        lenient().when(entity.getParentOfficeId()).thenReturn(PARENT_OFFICE_ID);
+        lenient().when(entity.getParentId()).thenReturn(PARENT_OFFICE_ID);
         lenient().when(officeLookupRepository.findById(PARENT_OFFICE_ID)).thenReturn(java.util.Optional.ofNullable(parent));
         lenient().when(parent.getCode()).thenReturn(PARENT_OFFICE_CODE);
         lenient().when(officeMapper.mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE)).thenReturn(model);

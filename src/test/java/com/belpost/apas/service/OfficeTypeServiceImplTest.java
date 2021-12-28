@@ -24,9 +24,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class OfficeTypeLookupServiceImplTest {
+class OfficeTypeServiceImplTest {
 
-    private static final String OFFICE_TYPE_CODE = "РУПС";
+    private static final String OFFICE_TYPE_CODE = OfficeTypeModel.LOCAL_OFFICE_CODE;
     private static final Long OFFICE_TYPE_ID = 1L;
 
     @Mock
@@ -36,7 +36,7 @@ class OfficeTypeLookupServiceImplTest {
     OfficeTypeMapper officeTypeMapper;
 
     @InjectMocks
-    OfficeTypeLookupServiceImpl service;
+    OfficeTypeServiceImpl service;
 
     @Test
     void shouldGetOfficeTypeByCode() {

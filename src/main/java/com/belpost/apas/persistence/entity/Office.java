@@ -1,6 +1,6 @@
 package com.belpost.apas.persistence.entity;
 
-import com.belpost.apas.persistence.entity.common.LookupEntity;
+import com.belpost.apas.persistence.entity.common.NodeEntity;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,12 +15,10 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id", callSuper = false)
-public class Office extends LookupEntity {
+public class Office extends NodeEntity {
 
     @Id
     private Long id;
-
-    private Long parentOfficeId;
 
     private Long officeTypeId;
 

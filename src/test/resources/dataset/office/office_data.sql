@@ -1,4 +1,4 @@
-INSERT INTO "office" (id, code, name, office_type_id, parent_office_id)
+INSERT INTO "office" (id, code, name, office_type_id, parent_id)
 VALUES (1, '230000', 'Областной филиал', 5, null),
        (2, '231000', 'Первый РегУПС', 4, 1),
        (3, '232000', 'Второй РегУПС', 4, 1),

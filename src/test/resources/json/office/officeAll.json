@@ -4,146 +4,146 @@
     "code": "230000",
     "name": "Областной филиал",
     "officeTypeId": 5,
-    "parentOfficeId": null
+    "parentId": null
   },
   {
     "id": 2,
     "code": "231000",
     "name": "Первый РегУПС",
     "officeTypeId": 4,
-    "parentOfficeId": 1
+    "parentId": 1
   },
   {
     "id": 3,
     "code": "232000",
     "name": "Второй РегУПС",
     "officeTypeId": 4,
-    "parentOfficeId": 1
+    "parentId": 1
   },
   {
     "id": 4,
     "code": "231100",
     "name": "Красный районный участок",
     "officeTypeId": 3,
-    "parentOfficeId": 2
+    "parentId": 2
   },
   {
     "id": 5,
     "code": "231200",
     "name": "Синий районный участок",
     "officeTypeId": 3,
-    "parentOfficeId": 2
+    "parentId": 2
   },
   {
     "id": 6,
     "code": "232100",
     "name": "Зеленый районный участок",
     "officeTypeId": 3,
-    "parentOfficeId": 3
+    "parentId": 3
   },
   {
     "id": 7,
     "code": "232200",
     "name": "Фиолетовый районный участок",
     "officeTypeId": 3,
-    "parentOfficeId": 3
+    "parentId": 3
   },
   {
     "id": 8,
     "code": "231101",
     "name": "Красное 1",
     "officeTypeId": 2,
-    "parentOfficeId": 4
+    "parentId": 4
   },
   {
     "id": 9,
     "code": "231102",
     "name": "Красное 2",
     "officeTypeId": 2,
-    "parentOfficeId": 4
+    "parentId": 4
   },
   {
     "id": 10,
     "code": "231103",
     "name": "Красное 3",
     "officeTypeId": 2,
-    "parentOfficeId": 4
+    "parentId": 4
   },
   {
     "id": 11,
     "code": "231201",
     "name": "Синее 1",
     "officeTypeId": 2,
-    "parentOfficeId": 5
+    "parentId": 5
   },
   {
     "id": 12,
     "code": "231202",
     "name": "Синее 2",
     "officeTypeId": 2,
-    "parentOfficeId": 5
+    "parentId": 5
   },
   {
     "id": 13,
     "code": "231203",
     "name": "Синее 3",
     "officeTypeId": 2,
-    "parentOfficeId": 5
+    "parentId": 5
   },
   {
     "id": 14,
     "code": "232101",
     "name": "Зеленое 1",
     "officeTypeId": 2,
-    "parentOfficeId": 6
+    "parentId": 6
   },
   {
     "id": 15,
     "code": "232102",
     "name": "Зеленое 2",
     "officeTypeId": 2,
-    "parentOfficeId": 6
+    "parentId": 6
   },
   {
     "id": 16,
     "code": "232103",
     "name": "Зеленое 3",
     "officeTypeId": 2,
-    "parentOfficeId": 6
+    "parentId": 6
   },
   {
     "id": 17,
     "code": "232101",
     "name": "Фиолетовое 1",
     "officeTypeId": 2,
-    "parentOfficeId": 7
+    "parentId": 7
   },
   {
     "id": 18,
     "code": "232202",
     "name": "Фиолетовое 2",
     "officeTypeId": 2,
-    "parentOfficeId": 7
+    "parentId": 7
   },
   {
     "id": 19,
     "code": "232203",
     "name": "Фиолетовое 2",
     "officeTypeId": 2,
-    "parentOfficeId": 7
+    "parentId": 7
   },
   {
     "id": 20,
     "code": "231101z1",
     "name": "Красное 1 ВРМ 1",
     "officeTypeId": 1,
-    "parentOfficeId": 8
+    "parentId": 8
   },
   {
     "id": 21,
     "code": "231101z2",
     "name": "Красное 1 ВРМ 2",
     "officeTypeId": 1,
-    "parentOfficeId": 8
+    "parentId": 8
   }
 ]

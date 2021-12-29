@@ -8,14 +8,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Node <T>{
-    private T data = null;
+    private T rootElement;
 
     private List<Node<T>> children = new ArrayList<>();
 
     private Node<T> parent = null;
 
-    public Node(T data) {
-        this.data = data;
+    public Node(T rootElement) {
+        this.rootElement = rootElement;
     }
 
     public Node<T> addChild(Node<T> child) {

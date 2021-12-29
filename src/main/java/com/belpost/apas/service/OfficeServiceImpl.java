@@ -3,14 +3,12 @@ package com.belpost.apas.service;
 import com.belpost.apas.mapper.OfficeMapper;
 import com.belpost.apas.model.OfficeModel;
 import com.belpost.apas.model.OfficeTypeModel;
+import com.belpost.apas.model.common.Node;
 import com.belpost.apas.persistence.entity.Office;
-import com.belpost.apas.persistence.entity.common.LookupEntity;
 import com.belpost.apas.persistence.repository.common.NodeRepository;
 import com.belpost.apas.service.common.LookupService;
 import com.belpost.apas.service.common.NodeService;
 import com.belpost.apas.service.common.NodeServiceImpl;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -88,25 +86,13 @@ public class OfficeServiceImpl extends
         );
     }
 
+
     @Override
-    public Map<Integer, List<OfficeModel>> getChildrenGenerations(Long ancestorId, Integer marginalDescendantLevel) {
-        Map<Integer, List<OfficeModel>> childrenGenerations = new HashMap<>();
-        int i = marginalDescendantLevel;
-        int genLevel = 1;
-        List<Long> parentIds = Collections.singletonList(ancestorId);
+    public Node<OfficeModel> buildNodeTree(OfficeModel root) {
+        Node<OfficeModel> rootNode = new Node<>(root);
 
-        while (i > 0 && !findChildrenGenerations(parentIds.toArray(new Long[0])).isEmpty()) {
-            List<Office> childrenGen = findChildrenGenerations(parentIds.toArray(new Long[0]));
-            childrenGenerations.put(genLevel, getOfficeModels(childrenGen));
+        ;
 
-            parentIds = childrenGen.stream()
-                .map(LookupEntity::getId)
-                .collect(Collectors.toList());
-
-            genLevel++;
-            i--;
-        }
-
-        return childrenGenerations;
+        return rootNode;
     }
 }

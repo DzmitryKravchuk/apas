@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-@EqualsAndHashCode(of = "code")
+@EqualsAndHashCode(of = "id")
 public abstract class LookupModel {
 
     private Long id;

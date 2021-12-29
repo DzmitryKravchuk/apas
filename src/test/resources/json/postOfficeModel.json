@@ -3,5 +3,7 @@
   "code": "231101",
   "name": "Красное 1",
   "officeTypeCode": "ОПС",
-  "parentOfficeCode": "231100"
+  "parentOfficeCode": "231100",
+  "parentId": 4,
+  "hierarchyLvl": 1
 }

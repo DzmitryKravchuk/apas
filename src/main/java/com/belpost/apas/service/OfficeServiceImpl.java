@@ -4,6 +4,7 @@ import com.belpost.apas.mapper.OfficeMapper;
 import com.belpost.apas.model.OfficeModel;
 import com.belpost.apas.model.OfficeTypeModel;
 import com.belpost.apas.persistence.entity.Office;
+import com.belpost.apas.persistence.entity.common.LookupEntity;
 import com.belpost.apas.persistence.repository.common.NodeRepository;
 import com.belpost.apas.service.common.LookupService;
 import com.belpost.apas.service.common.NodeService;
@@ -42,10 +43,11 @@ public class OfficeServiceImpl extends
     }
 
     private OfficeModel getOfficeModel(Office e) {
-        String officeTypeCode = officeTypeService.getById(e.getOfficeTypeId()).getCode();
+        OfficeTypeModel type = officeTypeService.getById(e.getOfficeTypeId());
+        String officeTypeCode = type.getCode();
         String parentOfficeCode = findById(e.getParentId()).getCode();
-
-        return mapper.mapToModel(e, officeTypeCode, parentOfficeCode);
+        Integer hierarchyLvl = type.getHierarchyLvl();
+        return mapper.mapToModel(e, officeTypeCode, parentOfficeCode, hierarchyLvl);
     }
 
     @Override
@@ -73,12 +75,16 @@ public class OfficeServiceImpl extends
         Map<Long, String> officeTypeCodeMap = tl.stream()
             .collect(Collectors.toMap(OfficeTypeModel::getId, OfficeTypeModel::getCode));
 
+        Map<Long, Integer> hierarchyMap = tl.stream()
+            .collect(Collectors.toMap(OfficeTypeModel::getId, OfficeTypeModel::getHierarchyLvl));
+
         Map<Long, String> officeParentCodeMap = ol.stream()
             .collect(Collectors.toMap(Office::getId, Office::getCode));
 
         return mapper.mapToModel(e,
             officeTypeCodeMap.get(e.getOfficeTypeId()),
-            officeParentCodeMap.get(e.getParentId())
+            officeParentCodeMap.get(e.getParentId()),
+            hierarchyMap.get(e.getOfficeTypeId())
         );
     }
 
@@ -94,7 +100,7 @@ public class OfficeServiceImpl extends
             childrenGenerations.put(genLevel, getOfficeModels(childrenGen));
 
             parentIds = childrenGen.stream()
-                .map(o -> o.getId())
+                .map(LookupEntity::getId)
                 .collect(Collectors.toList());
 
             genLevel++;

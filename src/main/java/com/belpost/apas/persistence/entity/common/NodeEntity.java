@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@EqualsAndHashCode(of = "", callSuper = true)
+@EqualsAndHashCode(exclude = "parentId", callSuper = true)
 public abstract class NodeEntity extends  LookupEntity{
 
     private Long parentId;

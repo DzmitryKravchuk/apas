@@ -12,6 +12,10 @@ public class OfficeModel extends LookupModel {
 
     private String officeTypeCode;
 
+    private Integer hierarchyLvl;
+
+    private Integer parentId;
+
     private String parentOfficeCode;
 
 }

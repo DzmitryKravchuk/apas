@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS "office_type" (
                                       id serial NOT NULL,
                                       name varchar(255) NOT NULL,
                                       code varchar(100) NOT NULL UNIQUE,
+                                      hierarchy_lvl int NOT NULL,
                                       CONSTRAINT office_type_pk PRIMARY KEY (id)
 );
 

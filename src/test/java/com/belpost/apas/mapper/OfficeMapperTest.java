@@ -19,6 +19,7 @@ class OfficeMapperTest {
 
     private static final String OFFICE_TYPE_CODE = "ОПС";
     private static final String PARENT_OFFICE_CODE = "231100";
+    private static final Integer HIERARCHY_LVL = 1;
     private static final Long OFFICE_TYPE_ID = 2L;
     private static Office entity;
     private static OfficeModel model;
@@ -39,7 +40,7 @@ class OfficeMapperTest {
 
     @Test
     void shouldMapEntityToModel() {
-        OfficeModel actual = officeMapper.mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE);
+        OfficeModel actual = officeMapper.mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE, HIERARCHY_LVL);
 
         assertEquals(model, actual);
     }

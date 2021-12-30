@@ -90,9 +90,29 @@ public class OfficeServiceImpl extends
     @Override
     public Node<OfficeModel> buildNodeTree(OfficeModel root) {
         Node<OfficeModel> rootNode = new Node<>(root);
+        List <OfficeModel> descendents = getOfficeModels((findDescendents(root.getId())));
 
-        ;
+        // create list of nodes
+        List <Node<OfficeModel>> descNodes = descendents.stream()
+            .map(Node::new)
+            .collect(Collectors.toList());
+
+        // add children to parent nodes
+        descNodes.forEach(n -> n.addChildren(getChildByParentId(n.getNodeElement().getId(), descNodes)));
+
+        // add children for root node
+        List <Node<OfficeModel>> children = descNodes.stream()
+            .filter(n -> n.getNodeElement().getParentId().equals(rootNode.getNodeElement().getId()))
+            .collect(Collectors.toList());
+
+        rootNode.addChildren(children);
 
         return rootNode;
+    }
+
+    private List<Node<OfficeModel>> getChildByParentId(Long id, List<Node<OfficeModel>> descNodes) {
+        return descNodes.stream().
+            filter(n -> n.getNodeElement().getParentId().equals(id))
+            .collect(Collectors.toList());
     }
 }

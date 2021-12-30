@@ -7,15 +7,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Node <T>{
-    private T rootElement;
+public class Node <T extends NodeModel>{
+    private T nodeElement;
 
     private List<Node<T>> children = new ArrayList<>();
 
     private Node<T> parent = null;
 
-    public Node(T rootElement) {
-        this.rootElement = rootElement;
+    public Node(T nodeElement) {
+        this.nodeElement = nodeElement;
     }
 
     public Node<T> addChild(Node<T> child) {

@@ -3,6 +3,7 @@ package com.belpost.apas.service;
 import com.belpost.apas.mapper.OfficeMapper;
 import com.belpost.apas.model.OfficeModel;
 import com.belpost.apas.model.OfficeTypeModel;
+import com.belpost.apas.model.common.LookupModel;
 import com.belpost.apas.model.common.Node;
 import com.belpost.apas.persistence.entity.Office;
 import com.belpost.apas.persistence.repository.common.NodeRepository;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Slf4j
 public class OfficeServiceImpl extends
-    NodeServiceImpl<Office> implements LookupService<OfficeModel>, NodeService<OfficeModel> {
+    NodeServiceImpl<Office, OfficeModel> implements LookupService<OfficeModel>, NodeService<OfficeModel> {
 
     private final OfficeTypeServiceImpl officeTypeService;
     private final OfficeMapper mapper;
@@ -28,7 +29,7 @@ public class OfficeServiceImpl extends
     public OfficeServiceImpl(NodeRepository<Office> repository,
                              OfficeMapper mapper,
                              OfficeTypeServiceImpl officeTypeService) {
-        super(repository);
+        super(repository, mapper);
         this.officeTypeService = officeTypeService;
         this.mapper = mapper;
     }
@@ -36,23 +37,26 @@ public class OfficeServiceImpl extends
     @Override
     public OfficeModel getByCode(String code) {
         log.info("getByCode: {}", code);
-        Office e = findByCode(code);
-        return getOfficeModel(e);
+        //OfficeModel lm = findByCode(code);
+        //return getOfficeModel(lm);
+        return null;
     }
 
-    private OfficeModel getOfficeModel(Office e) {
-        OfficeTypeModel type = officeTypeService.getById(e.getOfficeTypeId());
-        String officeTypeCode = type.getCode();
-        String parentOfficeCode = findById(e.getParentId()).getCode();
-        Integer hierarchyLvl = type.getHierarchyLvl();
-        return mapper.mapToModel(e, officeTypeCode, parentOfficeCode, hierarchyLvl);
+    private OfficeModel getOfficeModel(LookupModel e) {
+        //OfficeTypeModel type = officeTypeService.getById(e.getId());
+        //String officeTypeCode = type.getCode();
+        //String parentOfficeCode = findById(e.getParentId()).getCode();
+        //Integer hierarchyLvl = type.getHierarchyLvl();
+        //mapper.mapToModel(e, officeTypeCode, parentOfficeCode, hierarchyLvl);
+        return null;
     }
 
     @Override
     public OfficeModel getById(Long id) {
         log.info("getById: {}", id);
         Office e = findById(id);
-        return getOfficeModel(e);
+        //return getOfficeModel(e);
+        return null;
     }
 
     @Override
@@ -90,10 +94,10 @@ public class OfficeServiceImpl extends
     @Override
     public Node<OfficeModel> buildNodeTree(OfficeModel root) {
         Node<OfficeModel> rootNode = new Node<>(root);
-        List <OfficeModel> descendents = getOfficeModels((findDescendents(root.getId())));
+        List<OfficeModel> descendents = getOfficeModels((findDescendents(root.getId())));
 
         // create list of nodes
-        List <Node<OfficeModel>> descNodes = descendents.stream()
+        List<Node<OfficeModel>> descNodes = descendents.stream()
             .map(Node::new)
             .collect(Collectors.toList());
 
@@ -101,7 +105,7 @@ public class OfficeServiceImpl extends
         descNodes.forEach(n -> n.addChildren(getChildByParentId(n.getNodeElement().getId(), descNodes)));
 
         // add children for root node
-        List <Node<OfficeModel>> children = descNodes.stream()
+        List<Node<OfficeModel>> children = descNodes.stream()
             .filter(n -> n.getNodeElement().getParentId().equals(rootNode.getNodeElement().getId()))
             .collect(Collectors.toList());
 
@@ -110,9 +114,12 @@ public class OfficeServiceImpl extends
         return rootNode;
     }
 
+
     private List<Node<OfficeModel>> getChildByParentId(Long id, List<Node<OfficeModel>> descNodes) {
         return descNodes.stream().
             filter(n -> n.getNodeElement().getParentId().equals(id))
             .collect(Collectors.toList());
     }
+
+
 }

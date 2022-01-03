@@ -74,16 +74,16 @@ CREATE TABLE IF NOT EXISTS "indicator_for_office_type" (
 
 
 CREATE TABLE IF NOT EXISTS "office_type" (
-                                      id serial NOT NULL,
-                                      name varchar(255) NOT NULL,
-                                      code varchar(100) NOT NULL UNIQUE,
-                                      hierarchy_lvl int NOT NULL,
-                                      CONSTRAINT office_type_pk PRIMARY KEY (id)
+                                      ID serial NOT NULL,
+                                      NAME varchar(255) NOT NULL,
+                                      CODE varchar(100) NOT NULL UNIQUE,
+                                      HIERARCHY_LVL int NOT NULL,
+                                      CONSTRAINT office_type_pk PRIMARY KEY (ID)
 );
 
 
 
-ALTER TABLE "office" ADD CONSTRAINT office_fk0 FOREIGN KEY (office_type_id) REFERENCES "office_type"(id);
+ALTER TABLE "office" ADD CONSTRAINT office_fk0 FOREIGN KEY (office_type_id) REFERENCES "office_type"(ID);
 ALTER TABLE "office" ADD CONSTRAINT office_fk1 FOREIGN KEY (parent_id) REFERENCES "office"(id);
 
 ALTER TABLE "indicator" ADD CONSTRAINT indicator_fk0 FOREIGN KEY (parent_id) REFERENCES "indicator"(id);
@@ -98,7 +98,7 @@ ALTER TABLE "values_of_indicators" ADD CONSTRAINT values_of_indicators_fk2 FOREI
 ALTER TABLE "indicator_type" ADD CONSTRAINT indicator_type_fk0 FOREIGN KEY (indicator_type_group_id) REFERENCES "indicator_type_group"(id);
 
 ALTER TABLE "indicator_for_office_type" ADD CONSTRAINT indicator_for_office_type_fk0 FOREIGN KEY (indicator_id) REFERENCES "indicator"(id);
-ALTER TABLE "indicator_for_office_type" ADD CONSTRAINT indicator_for_office_type_fk1 FOREIGN KEY (office_type_id) REFERENCES "office_type"(id);
+ALTER TABLE "indicator_for_office_type" ADD CONSTRAINT indicator_for_office_type_fk1 FOREIGN KEY (office_type_id) REFERENCES "office_type"(ID);
 
 
 

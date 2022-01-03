@@ -1,6 +1,8 @@
 package com.belpost.apas.service.common;
 
 import com.belpost.apas.exception.ResourceNotFoundException;
+import com.belpost.apas.mapper.common.LookupMapper;
+import com.belpost.apas.model.common.LookupModel;
 import com.belpost.apas.persistence.entity.common.LookupEntity;
 import com.belpost.apas.persistence.repository.common.LookupRepository;
 import java.lang.reflect.ParameterizedType;
@@ -9,13 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-public abstract class LookupServiceImpl<E extends LookupEntity> {
+public abstract class LookupServiceImpl<E extends LookupEntity, M extends LookupModel> {
     private final LookupRepository<E> repository;
+    private final LookupMapper<M, E> mapper;
 
     @Transactional(readOnly = true)
-    public E findByCode(String code) {
-        return repository.findByCode(code).orElseThrow(() -> new ResourceNotFoundException(
-            String.format("%s not found with code: %s", getEntityInfo(), code)));
+    public M findByCode(String code) {
+        return mapper.mapToModel(repository.findByCode(code).orElseThrow(() -> new ResourceNotFoundException(
+            String.format("%s not found with code: %s", getEntityInfo(), code))));
     }
 
     @Transactional(readOnly = true)

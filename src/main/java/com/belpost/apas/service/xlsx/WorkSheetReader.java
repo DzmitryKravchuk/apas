@@ -59,6 +59,7 @@ public class WorkSheetReader {
         Constructor<T> cst = clazz.getConstructor();
         T pojo = cst.newInstance();
         Map<String, Method> methods = getMethods(clazz);
+        methods.putAll(getMethods(clazz.getSuperclass()));
         while (cellIter.hasNext()) {
             XSSFCell nextCell = (XSSFCell) cellIter.next();
             Method m = methods.get("set" + header.get(nextCell.getColumnIndex()));

@@ -14,19 +14,19 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class OfficeTypeServiceImpl extends
-    LookupServiceImpl<OfficeType> implements LookupService<OfficeTypeModel> {
+    LookupServiceImpl<OfficeType, OfficeTypeModel> implements LookupService<OfficeTypeModel> {
 
     private final OfficeTypeMapper mapper;
 
     public OfficeTypeServiceImpl(OfficeTypeRepository repository, OfficeTypeMapper mapper) {
-        super(repository);
+        super(repository, mapper);
         this.mapper = mapper;
     }
 
     @Override
     public OfficeTypeModel getByCode(String code) {
         log.info("getByCode: {}", code);
-        return mapper.mapToModel(findByCode(code));
+        return findByCode(code);
     }
 
     @Override

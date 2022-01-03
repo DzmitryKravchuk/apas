@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "code": "230000",
+  "name": "Областной филиал",
+  "officeTypeCode": "Филиал",
+  "parentOfficeCode": null,
+  "parentId": null,
+  "hierarchyLvl": 4
+}

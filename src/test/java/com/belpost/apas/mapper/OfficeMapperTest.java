@@ -33,9 +33,9 @@ class OfficeMapperTest {
     @BeforeEach
     void setUp() throws IOException {
         entity = customObjectMapper
-            .readFromFile("src/test/resources/json/postOffice.json", Office.class);
+            .readFromFile("src/test/resources/json/office/postOffice.json", Office.class);
         model = customObjectMapper
-            .readFromFile("src/test/resources/json/postOfficeModel.json", OfficeModel.class);
+            .readFromFile("src/test/resources/json/office/postOfficeModel.json", OfficeModel.class);
     }
 
     @Test

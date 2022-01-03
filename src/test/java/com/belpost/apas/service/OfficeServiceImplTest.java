@@ -12,7 +12,7 @@ import com.belpost.apas.mapper.OfficeMapper;
 import com.belpost.apas.model.OfficeModel;
 import com.belpost.apas.model.OfficeTypeModel;
 import com.belpost.apas.persistence.entity.Office;
-import com.belpost.apas.persistence.repository.OfficeNodeRepository;
+import com.belpost.apas.persistence.repository.OfficeRepository;
 import com.belpost.apas.service.util.CustomObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -35,8 +35,7 @@ class OfficeServiceImplTest {
     private static final Integer HIERARCHY_LVL = 1;
 
     @Mock
-    //OfficeLookupRepository officeLookupRepository;
-    OfficeNodeRepository officeLookupRepository;
+    OfficeRepository officeRepository;
 
     @Mock
     OfficeTypeServiceImpl officeTypeService;
@@ -54,18 +53,21 @@ class OfficeServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        lenient().when(officeLookupRepository.findByCode(OFFICE_CODE)).thenReturn(java.util.Optional.ofNullable(entity));
-        lenient().when(officeLookupRepository.findById(OFFICE_ID)).thenReturn(java.util.Optional.ofNullable(entity));
+        lenient().when(officeRepository.findByCode(OFFICE_CODE))
+            .thenReturn(java.util.Optional.ofNullable(entity));
+        lenient().when(officeRepository.findById(OFFICE_ID)).thenReturn(java.util.Optional.ofNullable(entity));
         assert entity != null;
         lenient().when(entity.getOfficeTypeId()).thenReturn(OFFICE_TYPE_ID);
         lenient().when(officeTypeService.getById(OFFICE_TYPE_ID)).thenReturn(type);
         lenient().when(type.getCode()).thenReturn(OFFICE_TYPE_CODE);
         lenient().when(type.getHierarchyLvl()).thenReturn(HIERARCHY_LVL);
         lenient().when(entity.getParentId()).thenReturn(PARENT_OFFICE_ID);
-        lenient().when(officeLookupRepository.findById(PARENT_OFFICE_ID)).thenReturn(java.util.Optional.ofNullable(parent));
+        lenient().when(officeRepository.findById(PARENT_OFFICE_ID))
+            .thenReturn(java.util.Optional.ofNullable(parent));
         assert parent != null;
         lenient().when(parent.getCode()).thenReturn(PARENT_OFFICE_CODE);
-        lenient().when(officeMapper.mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE,HIERARCHY_LVL)).thenReturn(model);
+        lenient().when(officeMapper.mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE, HIERARCHY_LVL))
+            .thenReturn(model);
 
     }
 
@@ -76,10 +78,10 @@ class OfficeServiceImplTest {
 
         //then
         assertEquals(model, officeModel);
-        verify(officeLookupRepository).findByCode(OFFICE_CODE);
+        verify(officeRepository).findByCode(OFFICE_CODE);
         verify(officeTypeService).getById(OFFICE_TYPE_ID);
-        verify(officeLookupRepository).findById(PARENT_OFFICE_ID);
-        verify(officeMapper).mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE,HIERARCHY_LVL);
+        verify(officeRepository).findById(PARENT_OFFICE_ID);
+        verify(officeMapper).mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE, HIERARCHY_LVL);
 
     }
 
@@ -90,9 +92,9 @@ class OfficeServiceImplTest {
 
         //then
         assertEquals(model, officeModel);
-        verify(officeLookupRepository).findById(OFFICE_ID);
+        verify(officeRepository).findById(OFFICE_ID);
         verify(officeTypeService).getById(OFFICE_TYPE_ID);
-        verify(officeLookupRepository).findById(PARENT_OFFICE_ID);
+        verify(officeRepository).findById(PARENT_OFFICE_ID);
         verify(officeMapper).mapToModel(entity, OFFICE_TYPE_CODE, PARENT_OFFICE_CODE, HIERARCHY_LVL);
 
     }
@@ -106,16 +108,19 @@ class OfficeServiceImplTest {
 
         List<Office> offices = customObjectMapper
             .readListFromFile("src/test/resources/json/office/officeAll.json", Office.class);
-        when(officeLookupRepository.findAll()).thenReturn(offices);
+        when(officeRepository.findAll()).thenReturn(offices);
         when(officeTypeService.getAll()).thenReturn(officeTypes);
 
         //when
-        List <OfficeModel> officeModels = service.getAll();
+        List<OfficeModel> officeModels = service.getAll();
 
         //then
         assertEquals(21, officeModels.size());
-        verify(officeLookupRepository).findAll();
+        verify(officeRepository).findAll();
         verify(officeTypeService).getAll();
-        verify(officeMapper,times(20)).mapToModel(any(Office.class), any(String.class), any(String.class), any(Integer.class));
+        verify(officeMapper, times(20))
+            .mapToModel(any(Office.class), any(String.class), any(String.class), any(Integer.class));
+
     }
+
 }

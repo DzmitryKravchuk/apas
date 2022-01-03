@@ -19,6 +19,7 @@ class OfficeTypePersistenceTest extends AbstractPersistenceTest {
                 .orElseThrow(() -> new ResourceNotFoundException("Failed to execute OfficeTypeRepositoryTest"));
 
         Assertions.assertThat(ot.getCode()).isEqualTo(OFFICE_TYPE_CODE);
+        Assertions.assertThat(ot.getHierarchyLvl()).isEqualTo(4);
         Assertions.assertThat(ot.getId()).isEqualTo(5L);
     }
 

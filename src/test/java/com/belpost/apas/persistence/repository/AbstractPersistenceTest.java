@@ -15,7 +15,7 @@ public class AbstractPersistenceTest {
     protected OfficeTypeRepository officeTypeRepository;
 
     @Autowired
-    protected OfficeNodeRepository officeNodeRepository;
+    protected OfficeRepository officeRepository;
 
 
 

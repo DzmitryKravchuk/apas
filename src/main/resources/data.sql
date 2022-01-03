@@ -1,5 +1,5 @@
 
-INSERT INTO "office_type" (code, name, hierarchy_lvl) VALUES
+INSERT INTO "office_type" (CODE, NAME, HIERARCHY_LVL) VALUES
                                             ('ВРМ', 'Выделенное рабочее место', 0),
                                             ('ОПС', 'Отделение почтовой связи', 1),
                                             ('РайУч', 'Районный участок', 2),

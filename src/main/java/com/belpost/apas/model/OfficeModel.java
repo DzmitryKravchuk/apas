@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OfficeModel extends NodeModel {
 
+    private Long officeTypeId;
+
     private String officeTypeCode;
 
     private Integer hierarchyLvl;

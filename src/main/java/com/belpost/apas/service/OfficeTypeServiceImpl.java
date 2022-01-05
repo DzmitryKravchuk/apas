@@ -4,43 +4,40 @@ import com.belpost.apas.mapper.OfficeTypeMapper;
 import com.belpost.apas.model.OfficeTypeModel;
 import com.belpost.apas.persistence.entity.OfficeType;
 import com.belpost.apas.persistence.repository.OfficeTypeRepository;
-import com.belpost.apas.service.common.LookupService;
 import com.belpost.apas.service.common.LookupServiceImpl;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-public class OfficeTypeServiceImpl extends
-    LookupServiceImpl<OfficeType, OfficeTypeModel> implements LookupService<OfficeTypeModel> {
-
-    private final OfficeTypeMapper mapper;
+public class OfficeTypeServiceImpl
+    extends LookupServiceImpl<OfficeType, OfficeTypeModel>
+    implements OfficeTypeService {
 
     public OfficeTypeServiceImpl(OfficeTypeRepository repository, OfficeTypeMapper mapper) {
         super(repository, mapper);
-        this.mapper = mapper;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OfficeTypeModel getByCode(String code) {
         log.info("getByCode: {}", code);
-        return findByCode(code);
+        return super.getByCode(code);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OfficeTypeModel getById(Long id) {
         log.info("getById: {}", id);
-        return mapper.mapToModel(findById(id));
+        return super.getById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OfficeTypeModel> getAll() {
         log.info("getAll()");
-        return findAll().stream()
-            .map(mapper::mapToModel)
-            .collect(Collectors.toList());
+        return super.getAll();
     }
-
 }

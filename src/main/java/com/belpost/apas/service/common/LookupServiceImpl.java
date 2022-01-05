@@ -7,29 +7,33 @@ import com.belpost.apas.persistence.entity.common.LookupEntity;
 import com.belpost.apas.persistence.repository.common.LookupRepository;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-public abstract class LookupServiceImpl<E extends LookupEntity, M extends LookupModel> {
+public abstract class LookupServiceImpl<E extends LookupEntity, M extends LookupModel>
+    implements LookupService<M>{
+
     private final LookupRepository<E> repository;
     private final LookupMapper<M, E> mapper;
 
-    @Transactional(readOnly = true)
-    public M findByCode(String code) {
+    @Override
+    public M getByCode(String code) {
         return mapper.mapToModel(repository.findByCode(code).orElseThrow(() -> new ResourceNotFoundException(
             String.format("%s not found with code: %s", getEntityInfo(), code))));
     }
 
-    @Transactional(readOnly = true)
-    public E findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
-            String.format("%s not found with id: %s", getEntityInfo(), id)));
+    @Override
+    public M getById(Long id) {
+        return mapper.mapToModel(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(
+            String.format("%s not found with id: %s", getEntityInfo(), id))));
     }
 
-    @Transactional(readOnly = true)
-    public List<E> findAll() {
-        return repository.findAll();
+    @Override
+    public List<M> getAll() {
+        return repository.findAll().stream()
+            .map(mapper::mapToModel)
+            .collect(Collectors.toList());
     }
 
     @SuppressWarnings("unchecked")

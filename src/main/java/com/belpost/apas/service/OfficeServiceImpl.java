@@ -3,12 +3,9 @@ package com.belpost.apas.service;
 import com.belpost.apas.mapper.OfficeMapper;
 import com.belpost.apas.model.OfficeModel;
 import com.belpost.apas.model.OfficeTypeModel;
-import com.belpost.apas.model.common.LookupModel;
 import com.belpost.apas.model.common.Node;
 import com.belpost.apas.persistence.entity.Office;
-import com.belpost.apas.persistence.repository.common.NodeRepository;
-import com.belpost.apas.service.common.LookupService;
-import com.belpost.apas.service.common.NodeService;
+import com.belpost.apas.persistence.repository.OfficeRepository;
 import com.belpost.apas.service.common.NodeServiceImpl;
 import java.util.List;
 import java.util.Map;
@@ -20,106 +17,122 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @Slf4j
-public class OfficeServiceImpl extends
-    NodeServiceImpl<Office, OfficeModel> implements LookupService<OfficeModel>, NodeService<OfficeModel> {
+public class OfficeServiceImpl extends NodeServiceImpl<Office, OfficeModel> implements OfficeService{
 
     private final OfficeTypeServiceImpl officeTypeService;
-    private final OfficeMapper mapper;
 
-    public OfficeServiceImpl(NodeRepository<Office> repository,
+    public OfficeServiceImpl(OfficeRepository repository,
                              OfficeMapper mapper,
                              OfficeTypeServiceImpl officeTypeService) {
         super(repository, mapper);
         this.officeTypeService = officeTypeService;
-        this.mapper = mapper;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OfficeModel getByCode(String code) {
         log.info("getByCode: {}", code);
-        //OfficeModel lm = findByCode(code);
-        //return getOfficeModel(lm);
-        return null;
+        OfficeModel m = super.getByCode(code);
+        return getOfficeModel(m);
     }
 
-    private OfficeModel getOfficeModel(LookupModel e) {
-        //OfficeTypeModel type = officeTypeService.getById(e.getId());
-        //String officeTypeCode = type.getCode();
-        //String parentOfficeCode = findById(e.getParentId()).getCode();
-        //Integer hierarchyLvl = type.getHierarchyLvl();
-        //mapper.mapToModel(e, officeTypeCode, parentOfficeCode, hierarchyLvl);
-        return null;
+    private OfficeModel getOfficeModel(OfficeModel model) {
+        OfficeTypeModel type = officeTypeService.getById(model.getOfficeTypeId());
+        String officeTypeCode = type.getCode();
+        String parentOfficeCode = (model.getParentId()==null) ? null
+            : super.getById(model.getParentId()).getCode();
+        Integer hierarchyLvl = type.getHierarchyLvl();
+
+        setRemainingFields(model, officeTypeCode, parentOfficeCode, hierarchyLvl);
+        return model;
+    }
+
+    private void setRemainingFields(OfficeModel model, String officeTypeCode, String parentOfficeCode,
+                                    Integer hierarchyLvl) {
+        model.setOfficeTypeCode(officeTypeCode);
+        model.setParentOfficeCode(parentOfficeCode);
+        model.setHierarchyLvl(hierarchyLvl);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OfficeModel getById(Long id) {
         log.info("getById: {}", id);
-        Office e = findById(id);
-        //return getOfficeModel(e);
-        return null;
+        OfficeModel m = super.getById(id);
+        return getOfficeModel(m);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OfficeModel> getAll() {
-        log.info("getAll()");
-        List<Office> ol = findAll();
+        log.info("getAll");
+        List<OfficeModel> ol = super.getAll();
         return getOfficeModels(ol);
     }
 
-    private List<OfficeModel> getOfficeModels(List<Office> ol) {
+    private List<OfficeModel> getOfficeModels(List<OfficeModel> ol) {
         List<OfficeTypeModel> tl = officeTypeService.getAll();
         return ol.stream()
-            .map(e -> convertFindCodes(e, ol, tl))
+            .map(m -> processOtherFields(m, tl, ol))
             .collect(Collectors.toList());
     }
 
-    private OfficeModel convertFindCodes(Office e, List<Office> ol, List<OfficeTypeModel> tl) {
-        Map<Long, String> officeTypeCodeMap = tl.stream()
-            .collect(Collectors.toMap(OfficeTypeModel::getId, OfficeTypeModel::getCode));
-
-        Map<Long, Integer> hierarchyMap = tl.stream()
-            .collect(Collectors.toMap(OfficeTypeModel::getId, OfficeTypeModel::getHierarchyLvl));
-
-        Map<Long, String> officeParentCodeMap = ol.stream()
-            .collect(Collectors.toMap(Office::getId, Office::getCode));
-
-        return mapper.mapToModel(e,
-            officeTypeCodeMap.get(e.getOfficeTypeId()),
-            officeParentCodeMap.get(e.getParentId()),
-            hierarchyMap.get(e.getOfficeTypeId())
+    private OfficeModel processOtherFields(OfficeModel e, List<OfficeTypeModel> tl, List<OfficeModel> ol) {
+        setRemainingFields(e,
+            getOfficeTypeCodes(tl).get(e.getOfficeTypeId()),
+            getParentCodes(ol).get(e.getParentId()),
+            getHierarchyLevels(tl).get(e.getOfficeTypeId())
         );
+
+        return e;
     }
 
+    private Map<Long, String> getParentCodes(List<OfficeModel> ol) {
+        return ol.stream()
+            .collect(Collectors.toMap(OfficeModel::getId, OfficeModel::getCode));
+    }
+
+    private Map<Long, Integer> getHierarchyLevels(List<OfficeTypeModel> tl) {
+        return tl.stream()
+            .collect(Collectors.toMap(OfficeTypeModel::getId, OfficeTypeModel::getHierarchyLvl));
+    }
+
+    private Map<Long, String> getOfficeTypeCodes(List<OfficeTypeModel> tl) {
+        return tl.stream()
+            .collect(Collectors.toMap(OfficeTypeModel::getId, OfficeTypeModel::getCode));
+    }
 
     @Override
-    public Node<OfficeModel> buildNodeTree(OfficeModel root) {
-        Node<OfficeModel> rootNode = new Node<>(root);
-        List<OfficeModel> descendents = getOfficeModels((findDescendents(root.getId())));
+    @Transactional(readOnly = true)
+    public Node<OfficeModel> getAsTree(Long ancestorId) {
+        log.info("Get as tree for id: {}", ancestorId);
+        Node<OfficeModel> root = super.getAsTree(ancestorId);
+        List<OfficeTypeModel> tl = officeTypeService.getAll();
+        List<OfficeModel> ol = super.convertToList(root);
 
-        // create list of nodes
-        List<Node<OfficeModel>> descNodes = descendents.stream()
-            .map(Node::new)
-            .collect(Collectors.toList());
+        processOtherFields (root,
+            getOfficeTypeCodes(tl),
+            getHierarchyLevels(tl),
+            getParentCodes(ol));
 
-        // add children to parent nodes
-        descNodes.forEach(n -> n.addChildren(getChildByParentId(n.getNodeElement().getId(), descNodes)));
-
-        // add children for root node
-        List<Node<OfficeModel>> children = descNodes.stream()
-            .filter(n -> n.getNodeElement().getParentId().equals(rootNode.getNodeElement().getId()))
-            .collect(Collectors.toList());
-
-        rootNode.addChildren(children);
-
-        return rootNode;
+        return root;
     }
 
+    public void processOtherFields (Node<OfficeModel> node,
+                                    Map<Long, String> officeTypeCodes,
+                                    Map<Long, Integer> hierarchyLevels,
+                                    Map<Long, String> parentCodes) {
 
-    private List<Node<OfficeModel>> getChildByParentId(Long id, List<Node<OfficeModel>> descNodes) {
-        return descNodes.stream().
-            filter(n -> n.getNodeElement().getParentId().equals(id))
-            .collect(Collectors.toList());
+        setRemainingFields(node.getNodeElement(),
+            officeTypeCodes.get(node.getNodeElement().getOfficeTypeId()),
+            parentCodes.get(node.getNodeElement().getParentId()),
+            hierarchyLevels.get(node.getNodeElement().getOfficeTypeId())
+        );
+
+        node.getChildren().forEach(each -> processOtherFields(each,
+            officeTypeCodes,
+            hierarchyLevels,
+            parentCodes));
     }
-
 
 }

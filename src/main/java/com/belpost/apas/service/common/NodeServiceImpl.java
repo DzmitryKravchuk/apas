@@ -55,13 +55,16 @@ public abstract class NodeServiceImpl<E extends NodeEntity, M extends NodeModel>
     private List<M> findDescendents(Long ancestorId) {
         Set<Long> ancestorIds = new HashSet<>(Collections.singleton(ancestorId));
         Set<Long> parentIds = new HashSet<>(Collections.singleton(ancestorId));
-        while (!repository.findAllByParentIdIn(parentIds.toArray(new Long[0])).isEmpty()) {
-            // get all children for next generation of parents
-            List<E> children = repository.findAllByParentIdIn(parentIds.toArray(new Long[0]));
-            parentIds = children.stream()
-                .map(LookupEntity::getId).collect(Collectors.toSet());
+        List<E> children = repository.findAllByParentIdIn(ancestorId);
+        while (!children.isEmpty()) {
             // add parent ids to ancestor id list
             ancestorIds.addAll(parentIds);
+
+            parentIds = children.stream()
+                .map(LookupEntity::getId).collect(Collectors.toSet());
+
+            // get all children for next generation of parents
+            children = repository.findAllByParentIdIn(parentIds.toArray(new Long[0]));
         }
 
         return repository.findAllByParentIdIn(ancestorIds.toArray(new Long[0])).stream()

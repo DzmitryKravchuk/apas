@@ -1,0 +1,16 @@
+[
+  {
+    "id": 2,
+    "code": "231000",
+    "name": "Первый РегУПС",
+    "officeTypeId": 4,
+    "parentId": 1
+  },
+  {
+    "id": 3,
+    "code": "232000",
+    "name": "Второй РегУПС",
+    "officeTypeId": 4,
+    "parentId": 1
+  }
+]

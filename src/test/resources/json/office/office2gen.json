@@ -1,0 +1,30 @@
+[
+  {
+    "id": 4,
+    "code": "231100",
+    "name": "Красный районный участок",
+    "officeTypeId": 3,
+    "parentId": 2
+  },
+  {
+    "id": 5,
+    "code": "231200",
+    "name": "Синий районный участок",
+    "officeTypeId": 3,
+    "parentId": 2
+  },
+  {
+    "id": 6,
+    "code": "232100",
+    "name": "Зеленый районный участок",
+    "officeTypeId": 3,
+    "parentId": 3
+  },
+  {
+    "id": 7,
+    "code": "232200",
+    "name": "Фиолетовый районный участок",
+    "officeTypeId": 3,
+    "parentId": 3
+  }
+]

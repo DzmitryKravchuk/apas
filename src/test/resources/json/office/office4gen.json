@@ -1,0 +1,16 @@
+[
+  {
+    "id": 20,
+    "code": "231101z1",
+    "name": "Красное 1 ВРМ 1",
+    "officeTypeId": 1,
+    "parentId": 8
+  },
+  {
+    "id": 21,
+    "code": "231101z2",
+    "name": "Красное 1 ВРМ 2",
+    "officeTypeId": 1,
+    "parentId": 8
+  }
+]

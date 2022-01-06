@@ -19,11 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class OfficeServiceImpl extends NodeServiceImpl<Office, OfficeModel> implements OfficeService{
 
-    private final OfficeTypeServiceImpl officeTypeService;
+    private final OfficeTypeService officeTypeService;
 
     public OfficeServiceImpl(OfficeRepository repository,
                              OfficeMapper mapper,
-                             OfficeTypeServiceImpl officeTypeService) {
+                             OfficeTypeService officeTypeService) {
         super(repository, mapper);
         this.officeTypeService = officeTypeService;
     }

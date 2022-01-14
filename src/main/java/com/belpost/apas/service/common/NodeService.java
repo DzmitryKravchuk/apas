@@ -8,7 +8,7 @@ public interface NodeService<M extends NodeModel> {
 
     Node<M> getAsTree(Long ancestorId);
 
-    Node<M> getAsBranch(Long ancestorId, Long nodeId);
+    Node<M> getAsBranch(Long rootId, Long targetId);
 
     List<M> convertToList(Node<M> node);
 }

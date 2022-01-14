@@ -15,5 +15,7 @@ public interface OfficeService extends NodeService <OfficeModel>{
 
     Node<OfficeModel> getAsTree(Long ancestorId);
 
+    Node<OfficeModel> getAsBranch(Long rootId, Long targetId);
+
     void printTree(Node<OfficeModel> node, String appender);
 }

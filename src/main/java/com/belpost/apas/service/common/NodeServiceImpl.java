@@ -1,9 +1,9 @@
 package com.belpost.apas.service.common;
 
+import com.belpost.apas.exception.ArgumentMismatchException;
 import com.belpost.apas.mapper.common.NodeMapper;
 import com.belpost.apas.model.common.Node;
 import com.belpost.apas.model.common.NodeModel;
-import com.belpost.apas.persistence.entity.common.LookupEntity;
 import com.belpost.apas.persistence.entity.common.NodeEntity;
 import com.belpost.apas.persistence.repository.common.NodeRepository;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 public abstract class NodeServiceImpl<E extends NodeEntity, M extends NodeModel>
-    extends LookupServiceImpl<E, M> implements NodeService<M>{
+    extends LookupServiceImpl<E, M> implements NodeService<M> {
 
     private final NodeRepository<E> repository;
     private final NodeMapper<M, E> mapper;
@@ -53,23 +53,27 @@ public abstract class NodeServiceImpl<E extends NodeEntity, M extends NodeModel>
     }
 
     private List<M> findDescendents(Long ancestorId) {
-        Set<Long> ancestorIds = new HashSet<>(Collections.singleton(ancestorId));
-        Set<Long> parentIds = new HashSet<>(Collections.singleton(ancestorId));
-        List<E> children = repository.findAllByParentIdIn(ancestorId);
-        while (!children.isEmpty()) {
-            // add parent ids to ancestor id list
-            ancestorIds.addAll(parentIds);
-
-            parentIds = children.stream()
-                .map(LookupEntity::getId).collect(Collectors.toSet());
-
-            // get all children for next generation of parents
-            children = repository.findAllByParentIdIn(parentIds.toArray(new Long[0]));
-        }
+        Set<Long> ancestorIds = getIdsInTree(ancestorId);
 
         return repository.findAllByParentIdIn(ancestorIds.toArray(new Long[0])).stream()
             .map(mapper::mapToModel)
             .collect(Collectors.toList());
+    }
+
+    private Set<Long> getIdsInTree(Long rootId) {
+        Set<Long> allIds = new HashSet<>(Collections.singleton(rootId));
+        List<E> children = repository.findAllByParentIdIn(rootId);
+        while (!children.isEmpty()) {
+            Set<Long> parentIds = children.stream()
+                .map(NodeEntity::getId).collect(Collectors.toSet());
+
+            // add parent ids to ancestor id list
+            allIds.addAll(parentIds);
+
+            // get all children for next generation of parents
+            children = repository.findAllByParentIdIn(parentIds.toArray(new Long[0]));
+        }
+        return allIds;
     }
 
     private List<Node<M>> getChildByParentId(Long id, List<Node<M>> descNodes) {
@@ -87,18 +91,50 @@ public abstract class NodeServiceImpl<E extends NodeEntity, M extends NodeModel>
     @Override
     public List<M> convertToList(Node<M> node) {
         List<M> l = new ArrayList<>();
-        getModelsFromNode(node,l);
+        getModelsFromNode(node, l);
         return l;
     }
 
-    private void getModelsFromNode(Node<M> node, List<M> l){
+    private void getModelsFromNode(Node<M> node, List<M> l) {
         l.add(node.getNodeElement());
         node.getChildren().forEach(each -> getModelsFromNode(each, l));
     }
 
     @Override
-    public Node<M> getAsBranch(Long ancestorId, Long nodeId){
+    @Transactional(readOnly = true)
+    public Node<M> getAsBranch(Long ancestorId, Long targetId) {
+        M targetElement = getById(targetId);
+        List<M> children = repository.findAllByParentIdIn(targetId).stream()
+            .map(mapper::mapToModel)
+            .collect(Collectors.toList());
 
-        return  null;
+        List<Node<M>> descNodes = children.stream()
+            .map(Node::new)
+            .collect(Collectors.toList());
+
+        Node<M> targetNode = new Node<>(targetElement);
+        targetNode.addChildren(descNodes);
+
+        Long parentId = targetElement.getParentId();
+
+        while (parentId != null) {
+            M parentElement = getById(parentId);
+            Node<M> parentNode = new Node<>(parentElement);
+            parentNode.addChild(targetNode);
+
+            targetNode = parentNode;
+
+            if (parentId.equals(ancestorId)) {
+                break;
+            } else if (parentId == null) {
+                throw new ArgumentMismatchException(
+                    String.format("target %s with id: %s not found from the root id: %s",
+                        getEntityInfo(), targetId, ancestorId));
+            }
+
+            parentId = parentElement.getId();
+        }
+
+        return targetNode;
     }
 }

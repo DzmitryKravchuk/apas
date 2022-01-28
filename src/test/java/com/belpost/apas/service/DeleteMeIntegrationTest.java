@@ -2,8 +2,6 @@ package com.belpost.apas.service;
 
 import com.belpost.apas.model.OfficeModel;
 import com.belpost.apas.model.common.Node;
-import com.belpost.apas.persistence.entity.Office;
-import com.belpost.apas.service.common.NodeServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,11 +15,12 @@ class DeleteMeIntegrationTest {
     private static final Long OFFICE_ID = 4L;
 
     @Autowired
-    private NodeServiceImpl <Office, OfficeModel> service;
+    private OfficeService service;
 
     @Test
     void shouldGetByCode() {
-        Node<OfficeModel> n = service.getAsBranch(1L,OFFICE_ID);
-        service.printTree(n,"-");
+        Node<OfficeModel> n = service.getAsTree(OFFICE_ID);
+        service.printTree(n, "-");
+        //System.out.println(n);
     }
 }

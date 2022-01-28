@@ -1,6 +1,5 @@
 package com.belpost.apas.service.common;
 
-import com.belpost.apas.exception.ArgumentMismatchException;
 import com.belpost.apas.mapper.common.NodeMapper;
 import com.belpost.apas.model.common.Node;
 import com.belpost.apas.model.common.NodeModel;
@@ -29,7 +28,7 @@ public abstract class NodeServiceImpl<E extends NodeEntity, M extends NodeModel>
     @Override
     @Transactional(readOnly = true)
     public Node<M> getAsTree(Long ancestorId) {
-        M rootElement = getById(ancestorId);
+        M rootElement = super.getById(ancestorId);
         Node<M> rootNode = new Node<>(rootElement);
 
         List<M> descendents = findDescendents(ancestorId);
@@ -116,25 +115,17 @@ public abstract class NodeServiceImpl<E extends NodeEntity, M extends NodeModel>
         targetNode.addChildren(descNodes);
 
         Long parentId = targetElement.getParentId();
+        if (!ancestorId.equals(targetId)) {
+            while (parentId != null && !ancestorId.equals(targetNode.getNodeElement().getId())) {
+                M parentElement = getById(parentId);
+                Node<M> parentNode = new Node<>(parentElement);
+                parentNode.addChild(targetNode);
 
-        while (parentId != null) {
-            M parentElement = getById(parentId);
-            Node<M> parentNode = new Node<>(parentElement);
-            parentNode.addChild(targetNode);
-
-            targetNode = parentNode;
-
-            if (parentId.equals(ancestorId)) {
-                break;
-            } else if (parentId == null) {
-                throw new ArgumentMismatchException(
-                    String.format("target %s with id: %s not found from the root id: %s",
-                        getEntityInfo(), targetId, ancestorId));
+                targetNode = parentNode;
+                parentId = parentElement.getParentId();
             }
-
-            parentId = parentElement.getId();
         }
-
         return targetNode;
+
     }
 }

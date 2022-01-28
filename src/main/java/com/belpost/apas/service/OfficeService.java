@@ -3,15 +3,14 @@ package com.belpost.apas.service;
 import com.belpost.apas.model.OfficeModel;
 import com.belpost.apas.model.common.Node;
 import com.belpost.apas.service.common.NodeService;
-import java.util.List;
 
 public interface OfficeService extends NodeService <OfficeModel>{
 
     OfficeModel getByCode (String  code);
 
-    OfficeModel getById (Long  id);
+    OfficeModel getParentById(Long  id);
 
-    List<OfficeModel> getAll();
+    OfficeModel getById (Long  id);
 
     Node<OfficeModel> getAsTree(Long ancestorId);
 

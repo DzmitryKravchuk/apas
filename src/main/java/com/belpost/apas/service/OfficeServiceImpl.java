@@ -45,8 +45,8 @@ public class OfficeServiceImpl extends NodeServiceImpl<Office, OfficeModel> impl
 
     @Override
     @Transactional(readOnly = true)
-    public OfficeModel getParentById(Long id) {
-        log.info("getParentById: {}", id);
+    public OfficeModel getNodeById(Long id) {
+        log.info("getNodeById: {}", id);
         return super.getById(id);
     }
 

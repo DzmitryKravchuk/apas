@@ -56,7 +56,7 @@ public class OfficeServiceHelper {
         List<OfficeModel> ol = officeService.convertToList(node);
         // add parent for root node
         if (node.getNodeElement().getParentId() != null) {
-            ol.add(officeService.getParentById(node.getNodeElement().getParentId()));
+            ol.add(officeService.getNodeById(node.getNodeElement().getParentId()));
         }
         return ol.stream()
             .collect(Collectors.toMap(OfficeModel::getId, OfficeModel::getCode));

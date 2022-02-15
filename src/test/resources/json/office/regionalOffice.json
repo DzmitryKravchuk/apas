@@ -1,7 +1,7 @@
 {
-  "id": 4,
-  "code": "231100",
-  "name": "Красный районный участок",
-  "officeTypeId": 3,
-  "parentId": 2
+  "id": 2,
+  "code": "231000",
+  "name": "Первый РегУПС",
+  "officeTypeId": 4,
+  "parentId": 1
 }

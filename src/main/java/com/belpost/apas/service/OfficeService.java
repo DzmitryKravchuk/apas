@@ -8,7 +8,7 @@ public interface OfficeService extends NodeService <OfficeModel>{
 
     OfficeModel getByCode (String  code);
 
-    OfficeModel getParentById(Long  id);
+    OfficeModel getNodeById(Long  id);
 
     OfficeModel getById (Long  id);
 

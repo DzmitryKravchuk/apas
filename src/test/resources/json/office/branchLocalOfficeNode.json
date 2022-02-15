@@ -1,0 +1,90 @@
+{
+  "nodeElement": {
+    "id": 1,
+    "code": "230000",
+    "name": "Областной филиал",
+    "officeTypeId": 5,
+    "officeTypeCode": "Филиал",
+    "parentOfficeCode": null,
+    "parentId": null,
+    "hierarchyLvl": 4
+  },
+  "children": [
+    {
+      "nodeElement": {
+        "id": 2,
+        "code": "231000",
+        "name": "Первый РегУПС",
+        "officeTypeId": 4,
+        "officeTypeCode": "РегУПС",
+        "parentOfficeCode": "230000",
+        "parentId": 1,
+        "hierarchyLvl": 3
+      },
+      "children": [
+        {
+          "nodeElement": {
+            "id": 4,
+            "code": "231100",
+            "name": "Красный районный участок",
+            "officeTypeId": 3,
+            "officeTypeCode": "РайУч",
+            "parentOfficeCode": "231000",
+            "parentId": 2,
+            "hierarchyLvl": 2
+          },
+          "children": [
+            {
+              "nodeElement": {
+                "id": 8,
+                "code": "231101",
+                "name": "Красное 1",
+                "officeTypeId": 2,
+                "officeTypeCode": "ОПС",
+                "parentOfficeCode": "231100",
+                "parentId": 4,
+                "hierarchyLvl": 1
+              },
+              "children": [
+              ]
+            },
+            {
+              "nodeElement": {
+                "id": 9,
+                "code": "231102",
+                "name": "Красное 2",
+                "officeTypeId": 2,
+                "officeTypeCode": "ОПС",
+                "parentOfficeCode": "231100",
+                "parentId": 4,
+                "hierarchyLvl": 1
+              },
+              "children": [
+              ]
+            },
+            {
+              "nodeElement": {
+                "id": 10,
+                "code": "231103",
+                "name": "Красное 3",
+                "officeTypeId": 2,
+                "officeTypeCode": "ОПС",
+                "parentOfficeCode": "231100",
+                "parentId": 4,
+                "hierarchyLvl": 1
+              },
+              "children": [
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+
+
+
+
+
